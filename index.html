@@ -364,18 +364,18 @@ async function api(action, extra = {}) {
             'text/plain;charset=utf-8'
         },
 
-        body:
-          JSON.stringify({
+        body: JSON.stringify({
 
-            action:
-              action,
+  action: action,
 
-            initData:
-              initData,
+  userId:
+    String(
+      tg.initDataUnsafe.user.id
+    ),
 
-            ...extra
+  ...extra
 
-          })
+})
 
       }
     );
