@@ -1,401 +1,521 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
-  <meta charset="UTF-8">
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-  >
-
-  <title>Делишки</title>
-
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-  <style>
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    body {
-      margin: 0;
-      padding: 0;
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Roboto,
-        Arial,
-        sans-serif;
-
-      background: #f4f4f5;
-      color: #171717;
-    }
-
-    button,
-    input {
-      font: inherit;
-    }
-
-    .app {
-      max-width: 700px;
-      margin: 0 auto;
-      padding: 16px;
-    }
-
-    .header {
-      padding: 8px 4px 18px;
-    }
-
-    .title {
-      font-size: 28px;
-      font-weight: 800;
-      margin-bottom: 5px;
-    }
 
-    .subtitle {
-      color: #777;
-      font-size: 14px;
-    }
+<meta charset="UTF-8">
 
-    .search {
-      width: 100%;
-      border: none;
-      outline: none;
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+>
 
-      background: white;
+<title>Делишки</title>
 
-      border-radius: 14px;
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-      padding: 14px 16px;
+<style>
 
-      font-size: 16px;
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
 
-      box-shadow:
-        0 2px 10px rgba(0,0,0,0.05);
+body {
 
-      margin-bottom: 14px;
-    }
+  margin: 0;
 
-    .loading {
-      text-align: center;
-      padding: 40px 20px;
-      color: #777;
-    }
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif;
 
-    .error {
-      background: #ffe7e7;
-      color: #b00020;
-      padding: 16px;
-      border-radius: 14px;
-      line-height: 1.5;
-    }
+  background: #f4f4f5;
 
-    .order {
-      background: white;
-      border-radius: 18px;
+  color: #171717;
 
-      padding: 17px;
+}
 
-      margin-bottom: 12px;
+button,
+input {
 
-      box-shadow:
-        0 3px 15px rgba(0,0,0,0.06);
+  font: inherit;
 
-      cursor: pointer;
+}
 
-      transition:
-        transform .1s ease;
-    }
+.app {
 
-    .order:active {
-      transform: scale(.98);
-    }
+  max-width: 720px;
 
-    .order-name {
-      font-size: 18px;
-      font-weight: 750;
-      line-height: 1.25;
+  margin: auto;
 
-      margin-bottom: 6px;
-    }
+  padding: 16px;
 
-    .order-element {
-      color: #666;
-      font-size: 14px;
-      margin-bottom: 13px;
-    }
+}
 
-    .order-info {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 7px;
-    }
+.screen {
 
-    .tag {
-      display: inline-flex;
-      align-items: center;
+  display: none;
 
-      background: #f1f1f1;
+}
 
-      border-radius: 9px;
+.screen.active {
 
-      padding: 6px 9px;
+  display: block;
 
-      font-size: 12px;
-      color: #555;
-    }
+}
 
-    .progress {
-      height: 7px;
-      background: #ededed;
+.header {
 
-      border-radius: 20px;
+  padding:
+    8px
+    4px
+    18px;
 
-      overflow: hidden;
+}
 
-      margin-top: 14px;
-    }
+.title {
 
-    .progress-bar {
-      height: 100%;
+  font-size: 28px;
 
-      background: #111;
+  font-weight: 800;
 
-      border-radius: 20px;
-    }
+}
 
-    .progress-text {
-      font-size: 12px;
-      color: #777;
+.subtitle {
 
-      margin-top: 6px;
-    }
+  margin-top: 5px;
 
-    .screen {
-      display: none;
-    }
+  color: #777;
 
-    .screen.active {
-      display: block;
-    }
+  font-size: 14px;
 
-    .back {
-      border: none;
-      background: transparent;
+}
 
-      padding: 5px 0 15px;
+.search {
 
-      font-size: 15px;
+  width: 100%;
 
-      color: #555;
+  border: none;
 
-      cursor: pointer;
-    }
+  outline: none;
 
-    .detail-card {
-      background: white;
+  background: white;
 
-      border-radius: 20px;
+  border-radius: 15px;
 
-      padding: 20px;
+  padding: 14px 16px;
 
-      margin-bottom: 14px;
+  font-size: 16px;
 
-      box-shadow:
-        0 3px 15px rgba(0,0,0,.05);
-    }
+  margin-bottom: 14px;
 
-    .detail-title {
-      font-size: 25px;
-      font-weight: 800;
+  box-shadow:
+    0 2px 10px
+    rgba(0,0,0,.05);
 
-      line-height: 1.2;
+}
 
-      margin-bottom: 8px;
-    }
+.order {
 
-    .detail-element {
-      color: #666;
-      margin-bottom: 14px;
-    }
+  background: white;
 
-    .section-title {
-      font-size: 18px;
-      font-weight: 750;
+  border-radius: 18px;
 
-      margin:
-        8px 0 12px;
-    }
+  padding: 17px;
 
-    .stage {
-      display: flex;
+  margin-bottom: 12px;
 
-      align-items: flex-start;
+  box-shadow:
+    0 3px 15px
+    rgba(0,0,0,.06);
 
-      gap: 12px;
+  cursor: pointer;
 
-      padding: 12px 0;
+}
 
-      border-bottom:
-        1px solid #eeeeee;
-    }
+.order:active {
 
-    .stage:last-child {
-      border-bottom: none;
-    }
+  transform: scale(.985);
 
-    .stage-icon {
-      width: 32px;
-      height: 32px;
+}
 
-      flex: 0 0 32px;
+.order-name {
 
-      border-radius: 50%;
+  font-size: 18px;
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
+  font-weight: 750;
 
-      background: #eeeeee;
+  line-height: 1.25;
 
-      font-size: 15px;
-    }
+}
 
-    .stage.completed .stage-icon {
-      background: #dff7e6;
-    }
+.order-element {
 
-    .stage-name {
-      font-weight: 650;
-      line-height: 1.25;
-    }
+  margin-top: 5px;
 
-    .stage-status {
-      color: #777;
+  margin-bottom: 13px;
 
-      font-size: 13px;
+  color: #666;
 
-      margin-top: 3px;
-    }
+  font-size: 14px;
 
-    .stage-date {
-      color: #999;
+}
 
-      font-size: 12px;
+.tags {
 
-      margin-top: 4px;
-    }
+  display: flex;
 
-    .file {
-      display: flex;
+  flex-wrap: wrap;
 
-      align-items: center;
+  gap: 7px;
 
-      gap: 10px;
+}
 
-      padding: 13px 0;
+.tag {
 
-      border-bottom:
-        1px solid #eeeeee;
+  padding:
+    6px
+    9px;
 
-      text-decoration: none;
+  border-radius: 9px;
 
-      color: inherit;
-    }
+  background: #f0f0f0;
 
-    .file:last-child {
-      border-bottom: none;
-    }
+  font-size: 12px;
 
-    .file-icon {
-      width: 38px;
-      height: 38px;
+  color: #555;
 
-      border-radius: 10px;
+}
 
-      background: #f1f1f1;
+.progress {
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+  height: 7px;
 
-    .file-name {
-      flex: 1;
+  background: #e9e9e9;
 
-      font-weight: 600;
-      font-size: 14px;
-    }
+  border-radius: 20px;
 
-    .file-arrow {
-      color: #999;
-      font-size: 20px;
-    }
+  overflow: hidden;
 
-    .history-item {
-      padding: 12px 0;
+  margin-top: 14px;
 
-      border-bottom:
-        1px solid #eeeeee;
-    }
+}
 
-    .history-item:last-child {
-      border-bottom: none;
-    }
+.progress-bar {
 
-    .history-stage {
-      font-weight: 650;
-      margin-bottom: 3px;
-    }
+  height: 100%;
 
-    .history-change {
-      font-size: 13px;
-      color: #555;
-    }
+  background: #111;
 
-    .history-date {
-      font-size: 12px;
-      color: #999;
-      margin-top: 4px;
-    }
+  border-radius: 20px;
 
-    .empty {
-      text-align: center;
-      padding: 35px 15px;
-      color: #888;
-    }
+}
 
-    .refresh {
-      width: 100%;
+.progress-text {
 
-      border: none;
+  margin-top: 6px;
 
-      background: #111;
-      color: white;
+  color: #888;
 
-      border-radius: 14px;
+  font-size: 12px;
 
-      padding: 14px;
+}
 
-      font-weight: 700;
+.loading {
 
-      margin-top: 5px;
+  text-align: center;
 
-      cursor: pointer;
-    }
-  </style>
+  padding: 40px 15px;
+
+  color: #888;
+
+}
+
+.error {
+
+  background: #ffe7e7;
+
+  color: #a40020;
+
+  padding: 16px;
+
+  border-radius: 14px;
+
+  line-height: 1.5;
+
+}
+
+.back {
+
+  border: none;
+
+  background: none;
+
+  padding:
+    5px
+    0
+    15px;
+
+  color: #555;
+
+  font-size: 15px;
+
+}
+
+.card {
+
+  background: white;
+
+  border-radius: 20px;
+
+  padding: 19px;
+
+  margin-bottom: 14px;
+
+  box-shadow:
+    0 3px 15px
+    rgba(0,0,0,.05);
+
+}
+
+.detail-title {
+
+  font-size: 25px;
+
+  font-weight: 800;
+
+  line-height: 1.2;
+
+}
+
+.detail-element {
+
+  margin-top: 7px;
+
+  color: #666;
+
+}
+
+.section-title {
+
+  font-size: 18px;
+
+  font-weight: 750;
+
+  margin-bottom: 10px;
+
+}
+
+.stage {
+
+  display: flex;
+
+  gap: 12px;
+
+  padding:
+    12px
+    0;
+
+  border-bottom:
+    1px solid #eee;
+
+}
+
+.stage:last-child {
+
+  border-bottom: none;
+
+}
+
+.stage-icon {
+
+  width: 32px;
+
+  height: 32px;
+
+  flex: 0 0 32px;
+
+  border-radius: 50%;
+
+  background: #eee;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+}
+
+.stage.done
+.stage-icon {
+
+  background: #dff7e6;
+
+}
+
+.stage-name {
+
+  font-weight: 650;
+
+}
+
+.stage-status {
+
+  margin-top: 3px;
+
+  color: #777;
+
+  font-size: 13px;
+
+}
+
+.stage-date {
+
+  margin-top: 4px;
+
+  color: #999;
+
+  font-size: 12px;
+
+}
+
+.file {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding:
+    12px
+    0;
+
+  border-bottom:
+    1px solid #eee;
+
+  color: inherit;
+
+  text-decoration: none;
+
+}
+
+.file:last-child {
+
+  border-bottom: none;
+
+}
+
+.file-icon {
+
+  width: 38px;
+
+  height: 38px;
+
+  border-radius: 10px;
+
+  background: #f0f0f0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+}
+
+.file-name {
+
+  flex: 1;
+
+  font-weight: 600;
+
+  font-size: 14px;
+
+}
+
+.file-arrow {
+
+  color: #999;
+
+  font-size: 20px;
+
+}
+
+.history {
+
+  padding:
+    12px
+    0;
+
+  border-bottom:
+    1px solid #eee;
+
+}
+
+.history:last-child {
+
+  border-bottom: none;
+
+}
+
+.history-stage {
+
+  font-weight: 650;
+
+}
+
+.history-change {
+
+  margin-top: 4px;
+
+  color: #555;
+
+  font-size: 13px;
+
+}
+
+.history-date {
+
+  margin-top: 4px;
+
+  color: #999;
+
+  font-size: 12px;
+
+}
+
+.empty {
+
+  text-align: center;
+
+  padding: 30px 10px;
+
+  color: #888;
+
+}
+
+</style>
+
 </head>
+
 
 <body>
 
+
 <div class="app">
 
+
   <!-- ================================================= -->
-  <!-- СПИСОК ЗАКАЗОВ -->
+  <!-- СПИСОК -->
   <!-- ================================================= -->
 
-  <div
+  <section
     id="ordersScreen"
     class="screen active"
   >
@@ -403,14 +523,18 @@
     <div class="header">
 
       <div class="title">
+
         📋 Делишки
+
       </div>
 
       <div
         id="userName"
         class="subtitle"
       >
+
         Загрузка...
+
       </div>
 
     </div>
@@ -419,8 +543,7 @@
     <input
       id="search"
       class="search"
-      type="text"
-      placeholder="🔎 Найти заказ..."
+      placeholder="🔎 Поиск заказа..."
       autocomplete="off"
     >
 
@@ -428,19 +551,21 @@
     <div id="orders">
 
       <div class="loading">
+
         Загрузка заказов...
+
       </div>
 
     </div>
 
-  </div>
+  </section>
 
 
   <!-- ================================================= -->
-  <!-- КАРТОЧКА ЗАКАЗА -->
+  <!-- ЗАКАЗ -->
   <!-- ================================================= -->
 
-  <div
+  <section
     id="detailScreen"
     class="screen"
   >
@@ -449,240 +574,329 @@
       id="backButton"
       class="back"
     >
+
       ← Назад
+
     </button>
 
 
     <div id="detail">
 
       <div class="loading">
+
         Загрузка...
+
       </div>
 
     </div>
 
-  </div>
+  </section>
+
 
 </div>
 
 
 <script>
 
-  // ========================================================
-  // TELEGRAM
-  // ========================================================
 
-  const tg =
-    window.Telegram &&
-    window.Telegram.WebApp
-      ? window.Telegram.WebApp
+// ==========================================================
+// TELEGRAM
+// ==========================================================
+
+const tg =
+  window.Telegram &&
+  window.Telegram.WebApp
+    ? window.Telegram.WebApp
+    : null;
+
+
+if (tg) {
+
+  tg.ready();
+
+  tg.expand();
+
+}
+
+
+// ==========================================================
+// API
+// ==========================================================
+
+const API_URL =
+  'https://script.google.com/macros/s/AKfycbx4ywzpu8EAX3YtdCFOBgp60iVEVhxfd29QaJAvTee274X8rlZojrMYTSocK08pb-KeMQ/exec';
+
+
+// ==========================================================
+// ДАННЫЕ
+// ==========================================================
+
+let orders = [];
+
+let currentOrder = null;
+
+
+// ==========================================================
+// TELEGRAM USER
+// ==========================================================
+
+function getTelegramUser() {
+
+  if (!tg) {
+
+    throw new Error(
+      'Mini App открыт не внутри Telegram'
+    );
+
+  }
+
+
+  const user =
+    tg.initDataUnsafe &&
+    tg.initDataUnsafe.user
+      ? tg.initDataUnsafe.user
       : null;
 
 
-  if (tg) {
+  if (!user) {
 
-    tg.ready();
-
-    tg.expand();
-
-  }
-
-
-  // ========================================================
-  // GOOGLE APPS SCRIPT
-  // ========================================================
-
-  const API_URL =
-    'https://script.google.com/macros/s/AKfycbx4ywzpu8EAX3YtdCFOBgp60iVEVhxfd29QaJAvTee274X8rlZojrMYTSocK08pb-KeMQ/exec';
-
-
-  // ========================================================
-  // СОСТОЯНИЕ
-  // ========================================================
-
-  let orders = [];
-
-  let currentOrder = null;
-
-
-  // ========================================================
-  // ПОЛУЧЕНИЕ TELEGRAM ID
-  // ========================================================
-
-  function getTelegramUser() {
-
-    if (!tg) {
-
-      throw new Error(
-        'Telegram WebApp недоступен'
-      );
-
-    }
-
-
-    const user =
-      tg.initDataUnsafe &&
-      tg.initDataUnsafe.user
-        ? tg.initDataUnsafe.user
-        : null;
-
-
-    if (!user) {
-
-      throw new Error(
-        'Telegram ID не получен'
-      );
-
-    }
-
-
-    return user;
+    throw new Error(
+      'Telegram ID не получен'
+    );
 
   }
 
 
-  // ========================================================
-  // API
-  // ========================================================
+  return user;
 
-  async function api(
-    action,
-    extra = {}
+}
+
+
+// ==========================================================
+// API REQUEST
+// ==========================================================
+
+async function api(
+  action,
+  extra = {}
+) {
+
+  const user =
+    getTelegramUser();
+
+
+  const request = {
+
+    action:
+      action,
+
+    userId:
+      String(user.id),
+
+    ...extra
+
+  };
+
+
+  const response =
+    await fetch(
+
+      API_URL,
+
+      {
+
+        method:
+          'POST',
+
+        headers: {
+
+          'Content-Type':
+            'text/plain;charset=utf-8'
+
+        },
+
+        body:
+          JSON.stringify(
+            request
+          )
+
+      }
+
+    );
+
+
+  const result =
+    await response.json();
+
+
+  if (!result.ok) {
+
+    throw new Error(
+      result.error ||
+      'Ошибка API'
+    );
+
+  }
+
+
+  return result;
+
+}
+
+
+// ==========================================================
+// ПРОГРЕСС
+// ==========================================================
+
+function getProgress(order) {
+
+  if (
+    order &&
+    order.progress &&
+    typeof order.progress.percent !==
+      'undefined'
   ) {
+
+    return {
+
+      completed:
+        Number(
+          order.progress.completed
+        ) || 0,
+
+      total:
+        Number(
+          order.progress.total
+        ) || 0,
+
+      percent:
+        Number(
+          order.progress.percent
+        ) || 0
+
+    };
+
+  }
+
+
+  const statuses =
+    order &&
+    Array.isArray(order.statuses)
+      ? order.statuses
+      : [];
+
+
+  const trackable =
+    statuses.filter(
+      function(status) {
+
+        return (
+          status &&
+          status.trackable === true
+        );
+
+      }
+    );
+
+
+  const completed =
+    trackable.filter(
+      function(status) {
+
+        return (
+          status &&
+          status.completed === true
+        );
+
+      }
+    );
+
+
+  const total =
+    trackable.length;
+
+
+  const percent =
+    total > 0
+
+      ? Math.round(
+          completed.length /
+          total *
+          100
+        )
+
+      : 0;
+
+
+  return {
+
+    completed:
+      completed.length,
+
+    total:
+      total,
+
+    percent:
+      percent
+
+  };
+
+}
+
+
+// ==========================================================
+// ЗАПУСК
+// ==========================================================
+
+async function start() {
+
+  try {
 
     const user =
       getTelegramUser();
 
 
-    const body = {
-
-      action:
-        action,
-
-      userId:
-        String(user.id),
-
-      ...extra
-
-    };
-
-
-    const response =
-      await fetch(
-        API_URL,
-        {
-
-          method:
-            'POST',
-
-          headers: {
-
-            'Content-Type':
-              'text/plain;charset=utf-8'
-
-          },
-
-          body:
-            JSON.stringify(body)
-
-        }
+    document
+      .getElementById(
+        'userName'
+      )
+      .textContent =
+      '👋 ' +
+      (
+        user.first_name ||
+        user.username ||
+        'Пользователь'
       );
+
+
+    await api(
+      'test'
+    );
 
 
     const result =
-      await response.json();
-
-
-    if (
-      !result.ok
-    ) {
-
-      throw new Error(
-        result.error ||
-        'Ошибка API'
-      );
-
-    }
-
-
-    return result;
-
-  }
-
-
-  // ========================================================
-  // ЗАПУСК
-  // ========================================================
-
-  async function start() {
-
-    try {
-
-      const user =
-        getTelegramUser();
-
-
-      // Имя пользователя
-
-      const name =
-        user.first_name ||
-        user.username ||
-        'Пользователь';
-
-
-      document
-        .getElementById(
-          'userName'
-        )
-        .textContent =
-        '👋 ' + name;
-
-
-      // Проверка API
-
       await api(
-        'test'
+        'getOrders'
       );
 
 
-      // Получение заказов
-
-      const result =
-        await api(
-          'getOrders'
-        );
-
-
-      orders =
-        result.orders || [];
+    orders =
+      Array.isArray(
+        result.orders
+      )
+        ? result.orders
+        : [];
 
 
-      renderOrders();
+    renderOrders();
 
 
-    } catch (error) {
+  } catch (error) {
 
-      console.error(
-        error
-      );
+    console.error(
+      error
+    );
 
-
-      showError(
-        error.message
-      );
-
-    }
-
-  }
-
-
-  // ========================================================
-  // ОШИБКА
-  // ========================================================
-
-  function showError(
-    message
-  ) {
 
     document
       .getElementById(
@@ -693,7 +907,7 @@
         <div class="error">
 
           ❌ ${escapeHtml(
-            message
+            error.message
           )}
 
         </div>
@@ -702,158 +916,415 @@
 
   }
 
+}
 
-  // ========================================================
-  // СПИСОК ЗАКАЗОВ
-  // ========================================================
 
-  function renderOrders() {
+// ==========================================================
+// СПИСОК ЗАКАЗОВ
+// ==========================================================
 
-    const container =
-      document.getElementById(
+function renderOrders() {
+
+  const container =
+    document
+      .getElementById(
         'orders'
       );
 
 
-    const search =
-      document
-        .getElementById(
-          'search'
-        )
-        .value
-        .trim()
-        .toLowerCase();
+  const search =
+    document
+      .getElementById(
+        'search'
+      )
+      .value
+      .trim()
+      .toLowerCase();
 
 
-    const filtered =
-      orders.filter(
-        function(order) {
+  const filtered =
+    orders.filter(
+      function(order) {
 
-          const text =
-            (
+        const text =
 
-              order.order +
-              ' ' +
-              order.element +
-              ' ' +
-              order.type
+          String(
+            order.order || ''
+          ) +
 
-            )
-            .toLowerCase();
+          ' ' +
+
+          String(
+            order.element || ''
+          ) +
+
+          ' ' +
+
+          String(
+            order.type || ''
+          );
 
 
-          return text.includes(
+        return text
+          .toLowerCase()
+          .includes(
             search
           );
 
+      }
+    );
+
+
+  if (
+    filtered.length === 0
+  ) {
+
+    container.innerHTML = `
+
+      <div class="empty">
+
+        Заказы не найдены
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  container.innerHTML =
+    filtered
+      .map(
+        function(order) {
+
+          const progress =
+            getProgress(
+              order
+            );
+
+
+          return `
+
+            <div
+              class="order"
+              data-row="${Number(
+                order.row
+              )}"
+            >
+
+              <div class="order-name">
+
+                ${escapeHtml(
+                  order.order || ''
+                )}
+
+              </div>
+
+
+              <div class="order-element">
+
+                ${escapeHtml(
+                  order.element || ''
+                )}
+
+              </div>
+
+
+              <div class="tags">
+
+                ${
+                  order.type
+                    ? `
+
+                      <div class="tag">
+
+                        🏷
+                        ${escapeHtml(
+                          order.type
+                        )}
+
+                      </div>
+
+                    `
+                    : ''
+                }
+
+
+                ${
+                  order.installDate
+                    ? `
+
+                      <div class="tag">
+
+                        📅
+                        ${escapeHtml(
+                          order.installDate
+                        )}
+
+                      </div>
+
+                    `
+                    : ''
+                }
+
+
+                <div class="tag">
+
+                  📊
+                  ${progress.percent}%
+
+                </div>
+
+              </div>
+
+
+              <div class="progress">
+
+                <div
+                  class="progress-bar"
+                  style="width:${progress.percent}%"
+                ></div>
+
+              </div>
+
+
+              <div class="progress-text">
+
+                ${progress.completed}
+                из
+                ${progress.total}
+                этапов
+
+              </div>
+
+            </div>
+
+          `;
+
+        }
+      )
+      .join('');
+
+
+  container
+    .querySelectorAll(
+      '.order'
+    )
+    .forEach(
+      function(element) {
+
+        element.addEventListener(
+          'click',
+          function() {
+
+            openOrder(
+              Number(
+                element.dataset.row
+              )
+            );
+
+          }
+        );
+
+      }
+    );
+
+}
+
+
+// ==========================================================
+// ОТКРЫТЬ ЗАКАЗ
+// ==========================================================
+
+async function openOrder(
+  row
+) {
+
+  document
+    .getElementById(
+      'ordersScreen'
+    )
+    .classList
+    .remove('active');
+
+
+  document
+    .getElementById(
+      'detailScreen'
+    )
+    .classList
+    .add('active');
+
+
+  document
+    .getElementById(
+      'detail'
+    )
+    .innerHTML = `
+
+      <div class="loading">
+
+        Загрузка заказа...
+
+      </div>
+
+    `;
+
+
+  try {
+
+    const result =
+      await api(
+        'getOrder',
+        {
+          row:
+            row
         }
       );
 
 
-    if (
-      filtered.length === 0
-    ) {
+    currentOrder =
+      result.order;
 
-      container.innerHTML = `
 
-        <div class="empty">
+    renderOrder(
+      currentOrder
+    );
 
-          Заказы не найдены
+
+  } catch (error) {
+
+    document
+      .getElementById(
+        'detail'
+      )
+      .innerHTML = `
+
+        <div class="error">
+
+          ❌ ${escapeHtml(
+            error.message
+          )}
 
         </div>
 
       `;
 
-      return;
+  }
 
-    }
+}
 
 
-    container.innerHTML =
-      filtered
+// ==========================================================
+// ЗАКАЗ
+// ==========================================================
+
+function renderOrder(
+  order
+) {
+
+  const detail =
+    document
+      .getElementById(
+        'detail'
+      );
+
+
+  const progress =
+    getProgress(
+      order
+    );
+
+
+  // --------------------------------------------------------
+  // СТАТУСЫ
+  // --------------------------------------------------------
+
+  const statuses =
+    Array.isArray(
+      order.statuses
+    )
+      ? order.statuses
+      : [];
+
+
+  let stagesHtml = '';
+
+
+  if (
+    statuses.length > 0
+  ) {
+
+    stagesHtml =
+      statuses
         .map(
-          function(order) {
+          function(stage) {
+
+            const done =
+              stage &&
+              stage.completed === true;
+
 
             return `
 
               <div
-                class="order"
-                data-row="${order.row}"
+                class="stage ${
+                  done
+                    ? 'done'
+                    : ''
+                }"
               >
 
-                <div class="order-name">
+                <div class="stage-icon">
 
-                  ${escapeHtml(
-                    order.order
-                  )}
+                  ${
+                    done
+                      ? '✓'
+                      : '○'
+                  }
 
                 </div>
 
 
-                <div class="order-element">
+                <div>
 
-                  ${escapeHtml(
-                    order.element
-                  )}
+                  <div class="stage-name">
 
-                </div>
-
-
-                <div class="order-info">
-
-                  ${
-                    order.type
-                      ? `
-                        <div class="tag">
-                          🏷 ${escapeHtml(
-                            order.type
-                          )}
-                        </div>
-                      `
-                      : ''
-                  }
-
-
-                  ${
-                    order.installDate
-                      ? `
-                        <div class="tag">
-                          📅 ${escapeHtml(
-                            order.installDate
-                          )}
-                        </div>
-                      `
-                      : ''
-                  }
-
-
-                  <div class="tag">
-
-                    ${order.progress.percent}% готово
+                    ${escapeHtml(
+                      stage.name || ''
+                    )}
 
                   </div>
 
-                </div>
+
+                  <div class="stage-status">
+
+                    ${done
+                      ? 'Готово'
+                      : 'Не выполнено'
+                    }
+
+                  </div>
 
 
-                <div class="progress">
+                  ${
+                    stage.changedAt
+                      ? `
 
-                  <div
-                    class="progress-bar"
-                    style="
-                      width:${order.progress.percent}%;
-                    "
-                  ></div>
+                        <div class="stage-date">
 
-                </div>
+                          Последнее изменение:
+                          ${escapeHtml(
+                            stage.changedAt
+                          )}
 
+                        </div>
 
-                <div class="progress-text">
-
-                  ${order.progress.completed}
-                  из
-                  ${order.progress.total}
-                  этапов
+                      `
+                      : ''
+                  }
 
                 </div>
 
@@ -865,514 +1336,13 @@
         )
         .join('');
 
+  } else {
 
-    // ------------------------------------------------------
-    // Клики
-    // ------------------------------------------------------
+    stagesHtml = `
 
-    container
-      .querySelectorAll(
-        '.order'
-      )
-      .forEach(
-        function(element) {
+      <div class="empty">
 
-          element.addEventListener(
-            'click',
-            function() {
-
-              const row =
-                Number(
-                  element.dataset.row
-                );
-
-
-              openOrder(
-                row
-              );
-
-            }
-          );
-
-        }
-      );
-
-  }
-
-
-  // ========================================================
-  // ОТКРЫТЬ ЗАКАЗ
-  // ========================================================
-
-  async function openOrder(
-    row
-  ) {
-
-    document
-      .getElementById(
-        'ordersScreen'
-      )
-      .classList
-      .remove('active');
-
-
-    document
-      .getElementById(
-        'detailScreen'
-      )
-      .classList
-      .add('active');
-
-
-    document
-      .getElementById(
-        'detail'
-      )
-      .innerHTML = `
-
-        <div class="loading">
-
-          Загрузка заказа...
-
-        </div>
-
-      `;
-
-
-    try {
-
-      const result =
-        await api(
-          'getOrder',
-          {
-            row:
-              row
-          }
-        );
-
-
-      currentOrder =
-        result.order;
-
-
-      renderOrder(
-        currentOrder
-      );
-
-
-    } catch (error) {
-
-      document
-        .getElementById(
-          'detail'
-        )
-        .innerHTML = `
-
-          <div class="error">
-
-            ❌ ${escapeHtml(
-              error.message
-            )}
-
-          </div>
-
-        `;
-
-    }
-
-  }
-
-
-  // ========================================================
-  // РЕНДЕР ЗАКАЗА
-  // ========================================================
-
-  function renderOrder(
-    order
-  ) {
-
-    const detail =
-      document
-        .getElementById(
-          'detail'
-        );
-
-
-    // ------------------------------------------------------
-    // Этапы
-    // ------------------------------------------------------
-
-    const stages =
-      order.statuses || [];
-
-
-    let stagesHtml = '';
-
-
-    if (
-      stages.length
-    ) {
-
-      stagesHtml =
-        stages
-          .map(
-            function(stage) {
-
-              return `
-
-                <div
-                  class="
-                    stage
-                    ${
-                      stage.completed
-                        ? 'completed'
-                        : ''
-                    }
-                  "
-                >
-
-                  <div class="stage-icon">
-
-                    ${
-                      stage.completed
-                        ? '✓'
-                        : '○'
-                    }
-
-                  </div>
-
-
-                  <div>
-
-                    <div class="stage-name">
-
-                      ${escapeHtml(
-                        stage.name
-                      )}
-
-                    </div>
-
-
-                    <div class="stage-status">
-
-                      ${escapeHtml(
-                        stage.value
-                      )}
-
-                    </div>
-
-
-                    ${
-                      stage.changedAt
-                        ? `
-                          <div class="stage-date">
-
-                            Последнее изменение:
-                            ${escapeHtml(
-                              stage.changedAt
-                            )}
-
-                          </div>
-                        `
-                        : ''
-                    }
-
-                  </div>
-
-                </div>
-
-              `;
-
-            }
-          )
-          .join('');
-
-    } else {
-
-      stagesHtml = `
-
-        <div class="empty">
-
-          Этапы пока не определены
-
-        </div>
-
-      `;
-
-    }
-
-
-    // ------------------------------------------------------
-    // Файлы
-    // ------------------------------------------------------
-
-    const files =
-      order.files || [];
-
-
-    let filesHtml = '';
-
-
-    if (
-      files.length
-    ) {
-
-      filesHtml =
-        files
-          .map(
-            function(file) {
-
-              return `
-
-                <a
-                  class="file"
-                  href="${escapeAttribute(
-                    file.url
-                  )}"
-                  target="_blank"
-                  rel="noopener"
-                >
-
-                  <div class="file-icon">
-
-                    📎
-
-                  </div>
-
-
-                  <div class="file-name">
-
-                    ${escapeHtml(
-                      file.name
-                    )}
-
-                  </div>
-
-
-                  <div class="file-arrow">
-
-                    ›
-
-                  </div>
-
-                </a>
-
-              `;
-
-            }
-          )
-          .join('');
-
-    } else {
-
-      filesHtml = `
-
-        <div class="empty">
-
-          Файлов нет
-
-        </div>
-
-      `;
-
-    }
-
-
-    // ------------------------------------------------------
-    // История
-    // ------------------------------------------------------
-
-    const history =
-      order.history || [];
-
-
-    let historyHtml = '';
-
-
-    if (
-      history.length
-    ) {
-
-      historyHtml =
-        history
-          .map(
-            function(item) {
-
-              return `
-
-                <div class="history-item">
-
-                  <div class="history-stage">
-
-                    ${escapeHtml(
-                      item.stage
-                    )}
-
-                  </div>
-
-
-                  <div class="history-change">
-
-                    ${
-                      item.oldValue
-                        ? escapeHtml(
-                            item.oldValue
-                          )
-                        : '—'
-                    }
-
-                    →
-
-                    ${
-                      item.newValue
-                        ? escapeHtml(
-                            item.newValue
-                          )
-                        : '—'
-                    }
-
-                  </div>
-
-
-                  <div class="history-date">
-
-                    ${escapeHtml(
-                      item.date
-                    )}
-
-                  </div>
-
-                </div>
-
-              `;
-
-            }
-          )
-          .join('');
-
-    } else {
-
-      historyHtml = `
-
-        <div class="empty">
-
-          История изменений пока пустая
-
-        </div>
-
-      `;
-
-    }
-
-
-    // ------------------------------------------------------
-    // HTML
-    // ------------------------------------------------------
-
-    detail.innerHTML = `
-
-      <div class="detail-card">
-
-        <div class="detail-title">
-
-          ${escapeHtml(
-            order.order
-          )}
-
-        </div>
-
-
-        <div class="detail-element">
-
-          ${escapeHtml(
-            order.element
-          )}
-
-        </div>
-
-
-        <div class="order-info">
-
-          ${
-            order.type
-              ? `
-                <div class="tag">
-
-                  🏷 ${escapeHtml(
-                    order.type
-                  )}
-
-                </div>
-              `
-              : ''
-          }
-
-
-          ${
-            order.installDate
-              ? `
-                <div class="tag">
-
-                  📅 Монтаж:
-                  ${escapeHtml(
-                    order.installDate
-                  )}
-
-                </div>
-              `
-              : ''
-          }
-
-
-          <div class="tag">
-
-            📊 ${order.progress.percent}% готово
-
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <div class="detail-card">
-
-        <div class="section-title">
-
-          📋 Состояние заказа
-
-        </div>
-
-
-        ${stagesHtml}
-
-      </div>
-
-
-      <div class="detail-card">
-
-        <div class="section-title">
-
-          📁 Файлы
-
-        </div>
-
-
-        ${filesHtml}
-
-      </div>
-
-
-      <div class="detail-card">
-
-        <div class="section-title">
-
-          🕐 История
-
-        </div>
-
-
-        ${historyHtml}
+        Этапы отсутствуют
 
       </div>
 
@@ -1381,117 +1351,403 @@
   }
 
 
-  // ========================================================
-  // НАЗАД
-  // ========================================================
+  // --------------------------------------------------------
+  // ФАЙЛЫ
+  // --------------------------------------------------------
 
-  document
-    .getElementById(
-      'backButton'
+  const files =
+    Array.isArray(
+      order.files
     )
-    .addEventListener(
-      'click',
-      function() {
-
-        document
-          .getElementById(
-            'detailScreen'
-          )
-          .classList
-          .remove('active');
+      ? order.files
+      : [];
 
 
-        document
-          .getElementById(
-            'ordersScreen'
-          )
-          .classList
-          .add('active');
+  let filesHtml = '';
 
 
-        currentOrder =
-          null;
-
-      }
-    );
-
-
-  // ========================================================
-  // ПОИСК
-  // ========================================================
-
-  document
-    .getElementById(
-      'search'
-    )
-    .addEventListener(
-      'input',
-      function() {
-
-        renderOrders();
-
-      }
-    );
-
-
-  // ========================================================
-  // ЭКРАНИРОВАНИЕ HTML
-  // ========================================================
-
-  function escapeHtml(
-    value
+  if (
+    files.length > 0
   ) {
 
-    return String(
-      value ?? ''
-    )
+    filesHtml =
+      files
+        .map(
+          function(file) {
 
-      .replace(
-        /&/g,
-        '&amp;'
-      )
+            return `
 
-      .replace(
-        /</g,
-        '&lt;'
-      )
+              <a
+                class="file"
+                href="${escapeAttribute(
+                  file.url || '#'
+                )}"
+                target="_blank"
+                rel="noopener"
+              >
 
-      .replace(
-        />/g,
-        '&gt;'
-      )
+                <div class="file-icon">
 
-      .replace(
-        /"/g,
-        '&quot;'
-      )
+                  📎
 
-      .replace(
-        /'/g,
-        '&#039;'
-      );
+                </div>
+
+
+                <div class="file-name">
+
+                  ${escapeHtml(
+                    file.name || 'Файл'
+                  )}
+
+                </div>
+
+
+                <div class="file-arrow">
+
+                  ›
+
+                </div>
+
+              </a>
+
+            `;
+
+          }
+        )
+        .join('');
+
+  } else {
+
+    filesHtml = `
+
+      <div class="empty">
+
+        Файлов нет
+
+      </div>
+
+    `;
 
   }
 
 
-  function escapeAttribute(
-    value
+  // --------------------------------------------------------
+  // ИСТОРИЯ
+  // --------------------------------------------------------
+
+  const history =
+    Array.isArray(
+      order.history
+    )
+      ? order.history
+      : [];
+
+
+  let historyHtml = '';
+
+
+  if (
+    history.length > 0
   ) {
 
-    return escapeHtml(
-      value
-    );
+    historyHtml =
+      history
+        .map(
+          function(item) {
+
+            return `
+
+              <div class="history">
+
+                <div class="history-stage">
+
+                  ${escapeHtml(
+                    item.stage || ''
+                  )}
+
+                </div>
+
+
+                <div class="history-change">
+
+                  ${
+                    escapeHtml(
+                      item.oldValue || '—'
+                    )
+                  }
+
+                  →
+
+                  ${
+                    escapeHtml(
+                      item.newValue || '—'
+                    )
+                  }
+
+                </div>
+
+
+                <div class="history-date">
+
+                  ${escapeHtml(
+                    item.date || ''
+                  )}
+
+                </div>
+
+              </div>
+
+            `;
+
+          }
+        )
+        .join('');
+
+  } else {
+
+    historyHtml = `
+
+      <div class="empty">
+
+        История пока пустая
+
+      </div>
+
+    `;
 
   }
 
 
-  // ========================================================
-  // ЗАПУСК
-  // ========================================================
+  // --------------------------------------------------------
+  // HTML
+  // --------------------------------------------------------
 
-  start();
+  detail.innerHTML = `
+
+    <div class="card">
+
+      <div class="detail-title">
+
+        ${escapeHtml(
+          order.order || ''
+        )}
+
+      </div>
+
+
+      <div class="detail-element">
+
+        ${escapeHtml(
+          order.element || ''
+        )}
+
+      </div>
+
+
+      <div class="tags">
+
+        ${
+          order.type
+            ? `
+
+              <div class="tag">
+
+                🏷
+                ${escapeHtml(
+                  order.type
+                )}
+
+              </div>
+
+            `
+            : ''
+        }
+
+
+        ${
+          order.installDate
+            ? `
+
+              <div class="tag">
+
+                📅
+                ${escapeHtml(
+                  order.installDate
+                )}
+
+              </div>
+
+            `
+            : ''
+        }
+
+
+        <div class="tag">
+
+          📊
+          ${progress.percent}% готово
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="section-title">
+
+        📋 Состояние заказа
+
+      </div>
+
+
+      ${stagesHtml}
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="section-title">
+
+        📁 Файлы
+
+      </div>
+
+
+      ${filesHtml}
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="section-title">
+
+        🕐 История изменений
+
+      </div>
+
+
+      ${historyHtml}
+
+    </div>
+
+  `;
+
+}
+
+
+// ==========================================================
+// НАЗАД
+// ==========================================================
+
+document
+  .getElementById(
+    'backButton'
+  )
+  .addEventListener(
+    'click',
+    function() {
+
+      document
+        .getElementById(
+          'detailScreen'
+        )
+        .classList
+        .remove('active');
+
+
+      document
+        .getElementById(
+          'ordersScreen'
+        )
+        .classList
+        .add('active');
+
+    }
+  );
+
+
+// ==========================================================
+// ПОИСК
+// ==========================================================
+
+document
+  .getElementById(
+    'search'
+  )
+  .addEventListener(
+    'input',
+    function() {
+
+      renderOrders();
+
+    }
+  );
+
+
+// ==========================================================
+// HTML ESCAPE
+// ==========================================================
+
+function escapeHtml(
+  value
+) {
+
+  return String(
+    value ?? ''
+  )
+
+    .replace(
+      /&/g,
+      '&amp;'
+    )
+
+    .replace(
+      /</g,
+      '&lt;'
+    )
+
+    .replace(
+      />/g,
+      '&gt;'
+    )
+
+    .replace(
+      /"/g,
+      '&quot;'
+    )
+
+    .replace(
+      /'/g,
+      '&#039;'
+    );
+
+}
+
+
+function escapeAttribute(
+  value
+) {
+
+  return escapeHtml(
+    value
+  );
+
+}
+
+
+// ==========================================================
+// START
+// ==========================================================
+
+start();
 
 </script>
 
 </body>
+
 </html>
