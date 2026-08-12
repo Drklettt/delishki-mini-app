@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="ru">
 
 <head>
@@ -15,7 +14,6 @@
 
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-
 <style>
 
 * {
@@ -24,9 +22,7 @@
 }
 
 body {
-
   margin: 0;
-
   min-height: 100vh;
 
   background:
@@ -42,48 +38,33 @@ body {
     Roboto,
     Arial,
     sans-serif;
-
 }
 
 .container {
-
   max-width: 700px;
-
   margin: auto;
-
   padding: 20px 14px 35px;
-
 }
 
 .header {
-
   margin-bottom: 20px;
-
 }
 
 .title {
-
   font-size: 28px;
-
   font-weight: 800;
-
-  letter-spacing: -0.5px;
-
 }
 
 .subtitle {
-
   margin-top: 5px;
 
   color:
     var(--tg-theme-hint-color, #8e8e93);
 
   font-size: 14px;
-
 }
 
 .card {
-
   background:
     var(--tg-theme-secondary-bg-color, #fff);
 
@@ -92,29 +73,19 @@ body {
   margin-bottom: 12px;
 
   overflow: hidden;
-
-  box-shadow:
-    0 2px 12px
-    rgba(0, 0, 0, 0.04);
-
 }
 
 .card-title {
-
   padding: 16px;
 
   font-size: 16px;
-
   font-weight: 700;
-
 }
 
 .row {
-
   display: flex;
 
   align-items: center;
-
   justify-content: space-between;
 
   gap: 15px;
@@ -129,11 +100,9 @@ body {
       --tg-theme-section-separator-color,
       #e5e5ea
     );
-
 }
 
 .row-text {
-
   flex: 1;
 
   min-width: 0;
@@ -143,13 +112,10 @@ body {
   line-height: 1.35;
 
   word-break: break-word;
-
 }
 
 .switch {
-
   width: 52px;
-
   height: 31px;
 
   flex: 0 0 52px;
@@ -165,53 +131,39 @@ body {
   position: relative;
 
   transition: .2s;
-
 }
 
 .switch::after {
-
   content: "";
 
   position: absolute;
 
   width: 25px;
-
   height: 25px;
 
   left: 3px;
-
   top: 3px;
 
   border-radius: 50%;
 
   background: #fff;
 
-  box-shadow:
-    0 1px 4px
-    rgba(0,0,0,.2);
-
   transition: .2s;
-
 }
 
 .switch.on {
-
   background:
     var(
       --tg-theme-button-color,
       #2481cc
     );
-
 }
 
 .switch.on::after {
-
   left: 24px;
-
 }
 
 .button {
-
   width: 100%;
 
   margin-top: 5px;
@@ -237,17 +189,14 @@ body {
   font-size: 16px;
 
   font-weight: 700;
-
 }
 
 .loading {
-
   min-height: 70vh;
 
   display: flex;
 
   align-items: center;
-
   justify-content: center;
 
   text-align: center;
@@ -257,11 +206,9 @@ body {
       --tg-theme-hint-color,
       #8e8e93
     );
-
 }
 
 .error {
-
   margin-top: 40px;
 
   padding: 18px;
@@ -273,21 +220,6 @@ body {
   color: white;
 
   line-height: 1.45;
-
-}
-
-.empty {
-
-  padding: 25px 16px;
-
-  text-align: center;
-
-  color:
-    var(
-      --tg-theme-hint-color,
-      #8e8e93
-    );
-
 }
 
 </style>
@@ -300,9 +232,7 @@ body {
 <div id="app">
 
   <div class="loading">
-
     Загружаем таблицу...
-
   </div>
 
 </div>
@@ -310,6 +240,10 @@ body {
 
 <script>
 
+
+// =====================================================
+// TELEGRAM
+// =====================================================
 
 const tg =
   window.Telegram.WebApp;
@@ -320,23 +254,31 @@ tg.ready();
 tg.expand();
 
 
-/*
- * Это URL опубликованного
- * Google Apps Script API.
- */
+// =====================================================
+// GOOGLE APPS SCRIPT API
+// =====================================================
 
 const API_URL =
   'https://script.google.com/macros/s/AKfycbx4ywzpu8EAX3YtdCFOBgp60iVEVhxfd29QaJAvTee274X8rlZojrMYTSocK08pb-KeMQ/exec';
 
 
-const initData =
-  tg.initData;
+// =====================================================
+// ПОЛЬЗОВАТЕЛЬ TELEGRAM
+// =====================================================
+
+const telegramUser =
+  tg.initDataUnsafe &&
+  tg.initDataUnsafe.user;
 
 
-if (!initData) {
+if (
+  !telegramUser ||
+  !telegramUser.id
+) {
 
   showError(
-    'Mini App должен быть открыт через Telegram.'
+    'Telegram не передал ID пользователя. ' +
+    'Открой Mini App непосредственно из Telegram.'
   );
 
 } else {
@@ -347,10 +289,38 @@ if (!initData) {
 
 
 // =====================================================
-// API
+// API ЗАПРОС
 // =====================================================
 
-async function api(action, extra = {}) {
+async function api(
+  action,
+  extra = {}
+) {
+
+  const userId =
+    String(
+      telegramUser.id
+    );
+
+
+  const requestData = {
+
+    action:
+      action,
+
+    userId:
+      userId,
+
+    ...extra
+
+  };
+
+
+  console.log(
+    'Отправляем:',
+    requestData
+  );
+
 
   const response =
     await fetch(
@@ -364,18 +334,10 @@ async function api(action, extra = {}) {
             'text/plain;charset=utf-8'
         },
 
-        body: JSON.stringify({
-
-  action: action,
-
-  userId:
-    String(
-      tg.initDataUnsafe.user.id
-    ),
-
-  ...extra
-
-})
+        body:
+          JSON.stringify(
+            requestData
+          )
 
       }
     );
@@ -385,11 +347,17 @@ async function api(action, extra = {}) {
     await response.json();
 
 
+  console.log(
+    'Ответ:',
+    data
+  );
+
+
   if (!data.ok) {
 
     throw new Error(
       data.error ||
-      'Ошибка API'
+      'Ошибка Google Apps Script'
     );
 
   }
@@ -413,7 +381,11 @@ async function loadTable() {
         'getTable'
       );
 
-    renderTable(data);
+
+    renderTable(
+      data
+    );
+
 
   } catch (error) {
 
@@ -427,19 +399,17 @@ async function loadTable() {
 
 
 // =====================================================
-// ОТОБРАЖЕНИЕ
+// ОТОБРАЖЕНИЕ ТАБЛИЦЫ
 // =====================================================
 
-function renderTable(data) {
+function renderTable(
+  data
+) {
 
   const app =
     document.getElementById(
       'app'
     );
-
-
-  const user =
-    tg.initDataUnsafe.user;
 
 
   const b1 =
@@ -454,18 +424,21 @@ function renderTable(data) {
       <div class="header">
 
         <div class="title">
+
           📋 ${escapeHtml(
             data.sheetName
           )}
+
         </div>
 
+
         <div class="subtitle">
+
           👋 ${escapeHtml(
-            user &&
-            user.first_name
-              ? user.first_name
-              : 'Пользователь'
+            telegramUser.first_name ||
+            'Пользователь'
           )}
+
         </div>
 
       </div>
@@ -474,8 +447,11 @@ function renderTable(data) {
       <div class="card">
 
         <div class="card-title">
+
           📸 Фотографии
+
         </div>
+
 
         <div class="row">
 
@@ -485,15 +461,19 @@ function renderTable(data) {
 
           </div>
 
+
           <button
+
             class="switch ${
               b1 ? 'on' : ''
             }"
+
             onclick="
               setMainCheckbox(
                 ${!b1}
               )
             "
+
           ></button>
 
         </div>
@@ -504,14 +484,15 @@ function renderTable(data) {
       <div class="card">
 
         <div class="card-title">
+
           📊 Таблица
+
         </div>
 
   `;
 
 
-  let count =
-    0;
+  let count = 0;
 
 
   data.values.forEach(
@@ -531,9 +512,7 @@ function renderTable(data) {
           }
 
 
-          /*
-           * B1 уже показан выше.
-           */
+          // B1 уже показан отдельно
 
           if (
             r === 0 &&
@@ -575,9 +554,13 @@ function renderTable(data) {
 
     html += `
 
-      <div class="empty">
+      <div class="row">
 
-        Таблица пока пустая.
+        <div class="row-text">
+
+          Таблица пока пустая.
+
+        </div>
 
       </div>
 
@@ -592,13 +575,19 @@ function renderTable(data) {
 
 
       <button
+
         class="button"
-        onclick="loadTable()"
+
+        onclick="
+          loadTable()
+        "
+
       >
 
         🔄 Обновить
 
       </button>
+
 
     </div>
 
@@ -612,7 +601,7 @@ function renderTable(data) {
 
 
 // =====================================================
-// B1
+// ИЗМЕНЕНИЕ B1
 // =====================================================
 
 async function setMainCheckbox(
@@ -622,11 +611,14 @@ async function setMainCheckbox(
   try {
 
     await api(
+
       'setCheckbox',
+
       {
         checked:
           checked
       }
+
     );
 
 
@@ -648,10 +640,14 @@ async function setMainCheckbox(
 // ОШИБКА
 // =====================================================
 
-function showError(message) {
+function showError(
+  message
+) {
 
   document
-    .getElementById('app')
+    .getElementById(
+      'app'
+    )
     .innerHTML = `
 
       <div class="container">
@@ -666,8 +662,13 @@ function showError(message) {
 
 
         <button
+
           class="button"
-          onclick="loadTable()"
+
+          onclick="
+            loadTable()
+          "
+
         >
 
           🔄 Повторить
@@ -682,10 +683,12 @@ function showError(message) {
 
 
 // =====================================================
-// HTML ESCAPE
+// ЗАЩИТА HTML
 // =====================================================
 
-function escapeHtml(value) {
+function escapeHtml(
+  value
+) {
 
   return String(value)
 
@@ -715,6 +718,7 @@ function escapeHtml(value) {
     );
 
 }
+
 
 </script>
 
