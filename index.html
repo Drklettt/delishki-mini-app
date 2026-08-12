@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+>
+
+<title>Делишки Нади</title>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+
+<style>
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+
+  margin: 0;
+
+  min-height: 100vh;
+
+  background:
+    var(--tg-theme-bg-color, #f2f2f7);
+
+  color:
+    var(--tg-theme-text-color, #111);
+
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif;
+
+}
+
+.container {
+
+  max-width: 700px;
+
+  margin: auto;
+
+  padding: 20px 14px 35px;
+
+}
+
+.header {
+
+  margin-bottom: 20px;
+
+}
+
+.title {
+
+  font-size: 28px;
+
+  font-weight: 800;
+
+  letter-spacing: -0.5px;
+
+}
+
+.subtitle {
+
+  margin-top: 5px;
+
+  color:
+    var(--tg-theme-hint-color, #8e8e93);
+
+  font-size: 14px;
+
+}
+
+.card {
+
+  background:
+    var(--tg-theme-secondary-bg-color, #fff);
+
+  border-radius: 18px;
+
+  margin-bottom: 12px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 2px 12px
+    rgba(0, 0, 0, 0.04);
+
+}
+
+.card-title {
+
+  padding: 16px;
+
+  font-size: 16px;
+
+  font-weight: 700;
+
+}
+
+.row {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 15px;
+
+  min-height: 54px;
+
+  padding: 13px 16px;
+
+  border-top:
+    1px solid
+    var(
+      --tg-theme-section-separator-color,
+      #e5e5ea
+    );
+
+}
+
+.row-text {
+
+  flex: 1;
+
+  min-width: 0;
+
+  font-size: 15px;
+
+  line-height: 1.35;
+
+  word-break: break-word;
+
+}
+
+.switch {
+
+  width: 52px;
+
+  height: 31px;
+
+  flex: 0 0 52px;
+
+  padding: 0;
+
+  border: 0;
+
+  border-radius: 20px;
+
+  background: #c7c7cc;
+
+  position: relative;
+
+  transition: .2s;
+
+}
+
+.switch::after {
+
+  content: "";
+
+  position: absolute;
+
+  width: 25px;
+
+  height: 25px;
+
+  left: 3px;
+
+  top: 3px;
+
+  border-radius: 50%;
+
+  background: #fff;
+
+  box-shadow:
+    0 1px 4px
+    rgba(0,0,0,.2);
+
+  transition: .2s;
+
+}
+
+.switch.on {
+
+  background:
+    var(
+      --tg-theme-button-color,
+      #2481cc
+    );
+
+}
+
+.switch.on::after {
+
+  left: 24px;
+
+}
+
+.button {
+
+  width: 100%;
+
+  margin-top: 5px;
+
+  padding: 14px;
+
+  border: 0;
+
+  border-radius: 14px;
+
+  background:
+    var(
+      --tg-theme-button-color,
+      #2481cc
+    );
+
+  color:
+    var(
+      --tg-theme-button-text-color,
+      #fff
+    );
+
+  font-size: 16px;
+
+  font-weight: 700;
+
+}
+
+.loading {
+
+  min-height: 70vh;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+
+  color:
+    var(
+      --tg-theme-hint-color,
+      #8e8e93
+    );
+
+}
+
+.error {
+
+  margin-top: 40px;
+
+  padding: 18px;
+
+  border-radius: 16px;
+
+  background: #ff3b30;
+
+  color: white;
+
+  line-height: 1.45;
+
+}
+
+.empty {
+
+  padding: 25px 16px;
+
+  text-align: center;
+
+  color:
+    var(
+      --tg-theme-hint-color,
+      #8e8e93
+    );
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div id="app">
+
+  <div class="loading">
+
+    Загружаем таблицу...
+
+  </div>
+
+</div>
+
+
+<script>
+
+
+const tg =
+  window.Telegram.WebApp;
+
+
+tg.ready();
+
+tg.expand();
+
+
+/*
+ * Это URL опубликованного
+ * Google Apps Script API.
+ */
+
+const API_URL =
+  'https://script.google.com/macros/s/XXXXXXXXXXXXXXXX/exec';
+
+
+const initData =
+  tg.initData;
+
+
+if (!initData) {
+
+  showError(
+    'Mini App должен быть открыт через Telegram.'
+  );
+
+} else {
+
+  loadTable();
+
+}
+
+
+// =====================================================
+// API
+// =====================================================
+
+async function api(action, extra = {}) {
+
+  const response =
+    await fetch(
+      API_URL,
+      {
+
+        method: 'POST',
+
+        headers: {
+          'Content-Type':
+            'text/plain;charset=utf-8'
+        },
+
+        body:
+          JSON.stringify({
+
+            action:
+              action,
+
+            initData:
+              initData,
+
+            ...extra
+
+          })
+
+      }
+    );
+
+
+  const data =
+    await response.json();
+
+
+  if (!data.ok) {
+
+    throw new Error(
+      data.error ||
+      'Ошибка API'
+    );
+
+  }
+
+
+  return data;
+
+}
+
+
+// =====================================================
+// ЗАГРУЗКА ТАБЛИЦЫ
+// =====================================================
+
+async function loadTable() {
+
+  try {
+
+    const data =
+      await api(
+        'getTable'
+      );
+
+    renderTable(data);
+
+  } catch (error) {
+
+    showError(
+      error.message
+    );
+
+  }
+
+}
+
+
+// =====================================================
+// ОТОБРАЖЕНИЕ
+// =====================================================
+
+function renderTable(data) {
+
+  const app =
+    document.getElementById(
+      'app'
+    );
+
+
+  const user =
+    tg.initDataUnsafe.user;
+
+
+  const b1 =
+    data.values[0] &&
+    data.values[0][1] === true;
+
+
+  let html = `
+
+    <div class="container">
+
+      <div class="header">
+
+        <div class="title">
+          📋 ${escapeHtml(
+            data.sheetName
+          )}
+        </div>
+
+        <div class="subtitle">
+          👋 ${escapeHtml(
+            user &&
+            user.first_name
+              ? user.first_name
+              : 'Пользователь'
+          )}
+        </div>
+
+      </div>
+
+
+      <div class="card">
+
+        <div class="card-title">
+          📸 Фотографии
+        </div>
+
+        <div class="row">
+
+          <div class="row-text">
+
+            Фотографии закончились
+
+          </div>
+
+          <button
+            class="switch ${
+              b1 ? 'on' : ''
+            }"
+            onclick="
+              setMainCheckbox(
+                ${!b1}
+              )
+            "
+          ></button>
+
+        </div>
+
+      </div>
+
+
+      <div class="card">
+
+        <div class="card-title">
+          📊 Таблица
+        </div>
+
+  `;
+
+
+  let count =
+    0;
+
+
+  data.values.forEach(
+    function(row, r) {
+
+      row.forEach(
+        function(value, c) {
+
+          if (
+            value === '' ||
+            value === null ||
+            value === undefined
+          ) {
+
+            return;
+
+          }
+
+
+          /*
+           * B1 уже показан выше.
+           */
+
+          if (
+            r === 0 &&
+            c === 1
+          ) {
+
+            return;
+
+          }
+
+
+          count++;
+
+
+          html += `
+
+            <div class="row">
+
+              <div class="row-text">
+
+                ${escapeHtml(
+                  String(value)
+                )}
+
+              </div>
+
+            </div>
+
+          `;
+
+        }
+      );
+
+    }
+  );
+
+
+  if (count === 0) {
+
+    html += `
+
+      <div class="empty">
+
+        Таблица пока пустая.
+
+      </div>
+
+    `;
+
+  }
+
+
+  html += `
+
+      </div>
+
+
+      <button
+        class="button"
+        onclick="loadTable()"
+      >
+
+        🔄 Обновить
+
+      </button>
+
+    </div>
+
+  `;
+
+
+  app.innerHTML =
+    html;
+
+}
+
+
+// =====================================================
+// B1
+// =====================================================
+
+async function setMainCheckbox(
+  checked
+) {
+
+  try {
+
+    await api(
+      'setCheckbox',
+      {
+        checked:
+          checked
+      }
+    );
+
+
+    await loadTable();
+
+
+  } catch (error) {
+
+    showError(
+      error.message
+    );
+
+  }
+
+}
+
+
+// =====================================================
+// ОШИБКА
+// =====================================================
+
+function showError(message) {
+
+  document
+    .getElementById('app')
+    .innerHTML = `
+
+      <div class="container">
+
+        <div class="error">
+
+          ❌ ${escapeHtml(
+            message
+          )}
+
+        </div>
+
+
+        <button
+          class="button"
+          onclick="loadTable()"
+        >
+
+          🔄 Повторить
+
+        </button>
+
+      </div>
+
+    `;
+
+}
+
+
+// =====================================================
+// HTML ESCAPE
+// =====================================================
+
+function escapeHtml(value) {
+
+  return String(value)
+
+    .replace(
+      /&/g,
+      '&amp;'
+    )
+
+    .replace(
+      /</g,
+      '&lt;'
+    )
+
+    .replace(
+      />/g,
+      '&gt;'
+    )
+
+    .replace(
+      /"/g,
+      '&quot;'
+    )
+
+    .replace(
+      /'/g,
+      '&#039;'
+    );
+
+}
+
+</script>
+
+</body>
+
+</html>
