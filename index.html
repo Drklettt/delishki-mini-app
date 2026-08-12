@@ -3,236 +3,279 @@
 
 <head>
 
-<meta charset="UTF-8">
+  <meta charset="UTF-8">
 
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
->
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  >
 
-<title>Делишки Нади</title>
+  <title>Делишки Нади</title>
 
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-<style>
+  <style>
 
-* {
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
-}
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-body {
-  margin: 0;
-  min-height: 100vh;
+    body {
+      margin: 0;
+      min-height: 100vh;
 
-  background:
-    var(--tg-theme-bg-color, #f2f2f7);
+      background:
+        var(--tg-theme-bg-color, #f2f2f7);
 
-  color:
-    var(--tg-theme-text-color, #111);
+      color:
+        var(--tg-theme-text-color, #111111);
 
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    Arial,
-    sans-serif;
-}
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+    }
 
-.container {
-  max-width: 700px;
-  margin: auto;
-  padding: 20px 14px 35px;
-}
+    .container {
+      width: 100%;
+      max-width: 700px;
 
-.header {
-  margin-bottom: 20px;
-}
+      margin: 0 auto;
 
-.title {
-  font-size: 28px;
-  font-weight: 800;
-}
+      padding:
+        20px
+        14px
+        35px;
+    }
 
-.subtitle {
-  margin-top: 5px;
+    .header {
+      margin-bottom: 20px;
+    }
 
-  color:
-    var(--tg-theme-hint-color, #8e8e93);
+    .title {
+      font-size: 28px;
+      font-weight: 800;
+      line-height: 1.2;
+    }
 
-  font-size: 14px;
-}
+    .subtitle {
+      margin-top: 6px;
 
-.card {
-  background:
-    var(--tg-theme-secondary-bg-color, #fff);
+      color:
+        var(
+          --tg-theme-hint-color,
+          #8e8e93
+        );
 
-  border-radius: 18px;
+      font-size: 14px;
+    }
 
-  margin-bottom: 12px;
+    .card {
+      background:
+        var(
+          --tg-theme-secondary-bg-color,
+          #ffffff
+        );
 
-  overflow: hidden;
-}
+      border-radius: 18px;
 
-.card-title {
-  padding: 16px;
+      margin-bottom: 12px;
 
-  font-size: 16px;
-  font-weight: 700;
-}
+      overflow: hidden;
+    }
 
-.row {
-  display: flex;
+    .card-title {
+      padding: 16px;
 
-  align-items: center;
-  justify-content: space-between;
+      font-size: 17px;
+      font-weight: 700;
+    }
 
-  gap: 15px;
+    .row {
+      display: flex;
 
-  min-height: 54px;
+      align-items: center;
+      justify-content: space-between;
 
-  padding: 13px 16px;
+      gap: 15px;
 
-  border-top:
-    1px solid
-    var(
-      --tg-theme-section-separator-color,
-      #e5e5ea
-    );
-}
+      min-height: 54px;
 
-.row-text {
-  flex: 1;
+      padding:
+        13px
+        16px;
 
-  min-width: 0;
+      border-top:
+        1px solid
+        var(
+          --tg-theme-section-separator-color,
+          #e5e5ea
+        );
+    }
 
-  font-size: 15px;
+    .row-text {
+      flex: 1;
 
-  line-height: 1.35;
+      min-width: 0;
 
-  word-break: break-word;
-}
+      font-size: 15px;
 
-.switch {
-  width: 52px;
-  height: 31px;
+      line-height: 1.4;
 
-  flex: 0 0 52px;
+      word-break: break-word;
+    }
 
-  padding: 0;
+    .switch {
+      width: 52px;
+      height: 31px;
 
-  border: 0;
+      flex: 0 0 52px;
 
-  border-radius: 20px;
+      padding: 0;
 
-  background: #c7c7cc;
+      border: 0;
 
-  position: relative;
+      border-radius: 20px;
 
-  transition: .2s;
-}
+      background: #c7c7cc;
 
-.switch::after {
-  content: "";
+      position: relative;
 
-  position: absolute;
+      transition:
+        background 0.2s;
+    }
 
-  width: 25px;
-  height: 25px;
+    .switch::after {
+      content: "";
 
-  left: 3px;
-  top: 3px;
+      position: absolute;
 
-  border-radius: 50%;
+      width: 25px;
+      height: 25px;
 
-  background: #fff;
+      left: 3px;
+      top: 3px;
 
-  transition: .2s;
-}
+      border-radius: 50%;
 
-.switch.on {
-  background:
-    var(
-      --tg-theme-button-color,
-      #2481cc
-    );
-}
+      background: #ffffff;
 
-.switch.on::after {
-  left: 24px;
-}
+      transition:
+        left 0.2s;
+    }
 
-.button {
-  width: 100%;
+    .switch.on {
+      background:
+        var(
+          --tg-theme-button-color,
+          #2481cc
+        );
+    }
 
-  margin-top: 5px;
+    .switch.on::after {
+      left: 24px;
+    }
 
-  padding: 14px;
+    .button {
+      width: 100%;
 
-  border: 0;
+      margin-top: 5px;
 
-  border-radius: 14px;
+      padding: 14px;
 
-  background:
-    var(
-      --tg-theme-button-color,
-      #2481cc
-    );
+      border: 0;
 
-  color:
-    var(
-      --tg-theme-button-text-color,
-      #fff
-    );
+      border-radius: 14px;
 
-  font-size: 16px;
+      background:
+        var(
+          --tg-theme-button-color,
+          #2481cc
+        );
 
-  font-weight: 700;
-}
+      color:
+        var(
+          --tg-theme-button-text-color,
+          #ffffff
+        );
 
-.loading {
-  min-height: 70vh;
+      font-size: 16px;
 
-  display: flex;
+      font-weight: 700;
+    }
 
-  align-items: center;
-  justify-content: center;
+    .button:active {
+      opacity: 0.75;
+    }
 
-  text-align: center;
+    .loading {
+      min-height: 70vh;
 
-  color:
-    var(
-      --tg-theme-hint-color,
-      #8e8e93
-    );
-}
+      display: flex;
 
-.error {
-  margin-top: 40px;
+      align-items: center;
+      justify-content: center;
 
-  padding: 18px;
+      text-align: center;
 
-  border-radius: 16px;
+      padding: 20px;
 
-  background: #ff3b30;
+      color:
+        var(
+          --tg-theme-hint-color,
+          #8e8e93
+        );
+    }
 
-  color: white;
+    .error {
+      margin-top: 30px;
 
-  line-height: 1.45;
-}
+      padding: 18px;
 
-</style>
+      border-radius: 16px;
+
+      background: #ff3b30;
+
+      color: #ffffff;
+
+      line-height: 1.5;
+
+      word-break: break-word;
+    }
+
+    .debug {
+      margin-top: 12px;
+
+      padding: 12px;
+
+      border-radius: 12px;
+
+      background:
+        rgba(0, 0, 0, 0.08);
+
+      font-size: 12px;
+
+      word-break: break-all;
+    }
+
+  </style>
 
 </head>
 
 
 <body>
 
+
 <div id="app">
 
   <div class="loading">
+
     Загружаем таблицу...
+
   </div>
 
 </div>
@@ -242,7 +285,7 @@ body {
 
 
 // =====================================================
-// TELEGRAM
+// TELEGRAM WEB APP
 // =====================================================
 
 const tg =
@@ -255,7 +298,16 @@ tg.expand();
 
 
 // =====================================================
-// GOOGLE APPS SCRIPT API
+// GOOGLE APPS SCRIPT
+// =====================================================
+//
+// ВАЖНО:
+// Здесь должен быть URL твоего Google Apps Script.
+//
+// Например:
+//
+// https://script.google.com/macros/s/AKfycbxxxxxxxx/exec
+//
 // =====================================================
 
 const API_URL =
@@ -263,25 +315,136 @@ const API_URL =
 
 
 // =====================================================
-// ПОЛЬЗОВАТЕЛЬ TELEGRAM
+// TELEGRAM USER
 // =====================================================
 
-const telegramUser =
-  tg.initDataUnsafe &&
-  tg.initDataUnsafe.user;
+let telegramUser = null;
 
+
+// =====================================================
+// ПОЛУЧЕНИЕ ПОЛЬЗОВАТЕЛЯ TELEGRAM
+// =====================================================
+
+function getTelegramUser() {
+
+
+  // ---------------------------------------------------
+  // СПОСОБ №1
+  // initDataUnsafe
+  // ---------------------------------------------------
+
+  if (
+    tg.initDataUnsafe &&
+    tg.initDataUnsafe.user &&
+    tg.initDataUnsafe.user.id
+  ) {
+
+    console.log(
+      'Пользователь получен через initDataUnsafe'
+    );
+
+    return tg.initDataUnsafe.user;
+
+  }
+
+
+  // ---------------------------------------------------
+  // СПОСОБ №2
+  // Парсим initData самостоятельно
+  // ---------------------------------------------------
+
+  if (tg.initData) {
+
+    try {
+
+      const params =
+        new URLSearchParams(
+          tg.initData
+        );
+
+
+      const userString =
+        params.get('user');
+
+
+      if (userString) {
+
+        const user =
+          JSON.parse(
+            userString
+          );
+
+
+        console.log(
+          'Пользователь получен через initData'
+        );
+
+
+        return user;
+
+      }
+
+    } catch (error) {
+
+      console.error(
+        'Ошибка разбора initData:',
+        error
+      );
+
+    }
+
+  }
+
+
+  return null;
+
+}
+
+
+// =====================================================
+// ИНИЦИАЛИЗАЦИЯ
+// =====================================================
+
+telegramUser =
+  getTelegramUser();
+
+
+console.log(
+  'Telegram initData:',
+  tg.initData
+);
+
+
+console.log(
+  'Telegram initDataUnsafe:',
+  tg.initDataUnsafe
+);
+
+
+console.log(
+  'Telegram user:',
+  telegramUser
+);
+
+
+// =====================================================
+// ПРОВЕРКА TELEGRAM
+// =====================================================
 
 if (
   !telegramUser ||
   !telegramUser.id
 ) {
 
-  showError(
-    'Telegram не передал ID пользователя. ' +
-    'Открой Mini App непосредственно из Telegram.'
-  );
+  showTelegramError();
 
 } else {
+
+  console.log(
+    'Telegram ID:',
+    telegramUser.id
+  );
+
 
   loadTable();
 
@@ -289,7 +452,7 @@ if (
 
 
 // =====================================================
-// API ЗАПРОС
+// ОТПРАВКА ЗАПРОСА В GOOGLE APPS SCRIPT
 // =====================================================
 
 async function api(
@@ -297,10 +460,17 @@ async function api(
   extra = {}
 ) {
 
-  const userId =
-    String(
-      telegramUser.id
+
+  if (
+    !telegramUser ||
+    !telegramUser.id
+  ) {
+
+    throw new Error(
+      'Telegram ID не получен'
     );
+
+  }
 
 
   const requestData = {
@@ -309,7 +479,9 @@ async function api(
       action,
 
     userId:
-      userId,
+      String(
+        telegramUser.id
+      ),
 
     ...extra
 
@@ -317,7 +489,7 @@ async function api(
 
 
   console.log(
-    'Отправляем:',
+    'Отправляем в Apps Script:',
     requestData
   );
 
@@ -327,11 +499,14 @@ async function api(
       API_URL,
       {
 
-        method: 'POST',
+        method:
+          'POST',
 
         headers: {
+
           'Content-Type':
             'text/plain;charset=utf-8'
+
         },
 
         body:
@@ -343,14 +518,34 @@ async function api(
     );
 
 
-  const data =
-    await response.json();
+  const text =
+    await response.text();
 
 
   console.log(
-    'Ответ:',
-    data
+    'Ответ Apps Script:',
+    text
   );
+
+
+  let data;
+
+
+  try {
+
+    data =
+      JSON.parse(
+        text
+      );
+
+  } catch (error) {
+
+    throw new Error(
+      'Google Apps Script вернул некорректный ответ: ' +
+      text
+    );
+
+  }
 
 
   if (!data.ok) {
@@ -376,6 +571,9 @@ async function loadTable() {
 
   try {
 
+    showLoading();
+
+
     const data =
       await api(
         'getTable'
@@ -388,6 +586,11 @@ async function loadTable() {
 
 
   } catch (error) {
+
+    console.error(
+      error
+    );
+
 
     showError(
       error.message
@@ -406,27 +609,61 @@ function renderTable(
   data
 ) {
 
+
   const app =
     document.getElementById(
       'app'
     );
 
 
-  const b1 =
-    data.values[0] &&
-    data.values[0][1] === true;
+  if (
+    !data ||
+    !data.values
+  ) {
 
+    showError(
+      'Google Apps Script не вернул данные таблицы.'
+    );
+
+    return;
+
+  }
+
+
+  // ---------------------------------------------------
+  // B1
+  // ---------------------------------------------------
+
+  let b1 = false;
+
+
+  if (
+    data.values[0] &&
+    data.values[0].length > 1
+  ) {
+
+    b1 =
+      data.values[0][1] === true;
+
+  }
+
+
+  // ---------------------------------------------------
+  // HTML
+  // ---------------------------------------------------
 
   let html = `
 
     <div class="container">
+
 
       <div class="header">
 
         <div class="title">
 
           📋 ${escapeHtml(
-            data.sheetName
+            data.sheetName ||
+            'Делишки Нади'
           )}
 
         </div>
@@ -446,6 +683,7 @@ function renderTable(
 
       <div class="card">
 
+
         <div class="card-title">
 
           📸 Фотографии
@@ -454,6 +692,7 @@ function renderTable(
 
 
         <div class="row">
+
 
           <div class="row-text">
 
@@ -464,8 +703,12 @@ function renderTable(
 
           <button
 
+            type="button"
+
             class="switch ${
-              b1 ? 'on' : ''
+              b1
+                ? 'on'
+                : ''
             }"
 
             onclick="
@@ -476,12 +719,15 @@ function renderTable(
 
           ></button>
 
+
         </div>
+
 
       </div>
 
 
       <div class="card">
+
 
         <div class="card-title">
 
@@ -495,16 +741,30 @@ function renderTable(
   let count = 0;
 
 
+  // ---------------------------------------------------
+  // ВЫВОД ЗНАЧЕНИЙ
+  // ---------------------------------------------------
+
   data.values.forEach(
-    function(row, r) {
+    function(row, rowIndex) {
+
+
+      if (!Array.isArray(row)) {
+
+        return;
+
+      }
+
 
       row.forEach(
-        function(value, c) {
+        function(value, columnIndex) {
+
+
+          // B1 уже отображается выше
 
           if (
-            value === '' ||
-            value === null ||
-            value === undefined
+            rowIndex === 0 &&
+            columnIndex === 1
           ) {
 
             return;
@@ -512,11 +772,10 @@ function renderTable(
           }
 
 
-          // B1 уже показан отдельно
-
           if (
-            r === 0 &&
-            c === 1
+            value === '' ||
+            value === null ||
+            value === undefined
           ) {
 
             return;
@@ -576,6 +835,8 @@ function renderTable(
 
       <button
 
+        type="button"
+
         class="button"
 
         onclick="
@@ -601,12 +862,13 @@ function renderTable(
 
 
 // =====================================================
-// ИЗМЕНЕНИЕ B1
+// ИЗМЕНЕНИЕ ЧЕКБОКСА B1
 // =====================================================
 
 async function setMainCheckbox(
   checked
 ) {
+
 
   try {
 
@@ -615,8 +877,10 @@ async function setMainCheckbox(
       'setCheckbox',
 
       {
+
         checked:
           checked
+
       }
 
     );
@@ -626,6 +890,11 @@ async function setMainCheckbox(
 
 
   } catch (error) {
+
+    console.error(
+      error
+    );
+
 
     showError(
       error.message
@@ -637,12 +906,40 @@ async function setMainCheckbox(
 
 
 // =====================================================
-// ОШИБКА
+// ЗАГРУЗКА
 // =====================================================
 
-function showError(
-  message
-) {
+function showLoading() {
+
+  document
+    .getElementById(
+      'app'
+    )
+    .innerHTML = `
+
+      <div class="loading">
+
+        Загружаем таблицу...
+
+      </div>
+
+    `;
+
+}
+
+
+// =====================================================
+// ОШИБКА TELEGRAM
+// =====================================================
+
+function showTelegramError() {
+
+
+  const initDataStatus =
+    tg.initData
+      ? 'ПОЛУЧЕН'
+      : 'ПУСТОЙ';
+
 
   document
     .getElementById(
@@ -651,6 +948,58 @@ function showError(
     .innerHTML = `
 
       <div class="container">
+
+
+        <div class="error">
+
+          ❌ Telegram ID не получен.
+
+
+          <div class="debug">
+
+            <b>initData:</b>
+            ${initDataStatus}
+
+            <br><br>
+
+            <b>Открой Mini App:</b>
+
+            <br>
+
+            непосредственно через Telegram,
+            используя кнопку
+            «📋 Таблица».
+
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+    `;
+
+}
+
+
+// =====================================================
+// ОБЩАЯ ОШИБКА
+// =====================================================
+
+function showError(
+  message
+) {
+
+
+  document
+    .getElementById(
+      'app'
+    )
+    .innerHTML = `
+
+      <div class="container">
+
 
         <div class="error">
 
@@ -663,6 +1012,8 @@ function showError(
 
         <button
 
+          type="button"
+
           class="button"
 
           onclick="
@@ -674,6 +1025,7 @@ function showError(
           🔄 Повторить
 
         </button>
+
 
       </div>
 
@@ -690,7 +1042,9 @@ function escapeHtml(
   value
 ) {
 
-  return String(value)
+  return String(
+    value
+  )
 
     .replace(
       /&/g,
@@ -721,6 +1075,7 @@ function escapeHtml(
 
 
 </script>
+
 
 </body>
 
