@@ -1,54 +1,25 @@
 <!DOCTYPE html>
-
 <html lang="ru">
-
 <head>
-
   <meta charset="UTF-8">
-
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
   >
 
-  <title>Делишки Нади</title>
+  <title>Делишки</title>
 
-
-  <!-- Telegram Mini Apps -->
-
-  <script
-    src="https://telegram.org/js/telegram-web-app.js">
-  </script>
-
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <style>
-
     * {
       box-sizing: border-box;
-
-      -webkit-tap-highlight-color:
-        transparent;
+      -webkit-tap-highlight-color: transparent;
     }
 
-
     body {
-
       margin: 0;
-
-      min-height: 100vh;
-
-      background:
-        var(
-          --tg-theme-bg-color,
-          #f2f2f7
-        );
-
-      color:
-        var(
-          --tg-theme-text-color,
-          #111111
-        );
-
+      padding: 0;
       font-family:
         -apple-system,
         BlinkMacSystemFont,
@@ -57,294 +28,438 @@
         Arial,
         sans-serif;
 
+      background: #f4f4f5;
+      color: #171717;
     }
 
+    button,
+    input {
+      font: inherit;
+    }
 
-    .container {
-
-      width: 100%;
-
+    .app {
       max-width: 700px;
-
       margin: 0 auto;
-
-      padding:
-        20px
-        14px
-        35px;
-
+      padding: 16px;
     }
-
 
     .header {
-
-      margin-bottom: 20px;
-
+      padding: 8px 4px 18px;
     }
 
-
     .title {
-
       font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 5px;
+    }
 
+    .subtitle {
+      color: #777;
+      font-size: 14px;
+    }
+
+    .search {
+      width: 100%;
+      border: none;
+      outline: none;
+
+      background: white;
+
+      border-radius: 14px;
+
+      padding: 14px 16px;
+
+      font-size: 16px;
+
+      box-shadow:
+        0 2px 10px rgba(0,0,0,0.05);
+
+      margin-bottom: 14px;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px 20px;
+      color: #777;
+    }
+
+    .error {
+      background: #ffe7e7;
+      color: #b00020;
+      padding: 16px;
+      border-radius: 14px;
+      line-height: 1.5;
+    }
+
+    .order {
+      background: white;
+      border-radius: 18px;
+
+      padding: 17px;
+
+      margin-bottom: 12px;
+
+      box-shadow:
+        0 3px 15px rgba(0,0,0,0.06);
+
+      cursor: pointer;
+
+      transition:
+        transform .1s ease;
+    }
+
+    .order:active {
+      transform: scale(.98);
+    }
+
+    .order-name {
+      font-size: 18px;
+      font-weight: 750;
+      line-height: 1.25;
+
+      margin-bottom: 6px;
+    }
+
+    .order-element {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 13px;
+    }
+
+    .order-info {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+
+      background: #f1f1f1;
+
+      border-radius: 9px;
+
+      padding: 6px 9px;
+
+      font-size: 12px;
+      color: #555;
+    }
+
+    .progress {
+      height: 7px;
+      background: #ededed;
+
+      border-radius: 20px;
+
+      overflow: hidden;
+
+      margin-top: 14px;
+    }
+
+    .progress-bar {
+      height: 100%;
+
+      background: #111;
+
+      border-radius: 20px;
+    }
+
+    .progress-text {
+      font-size: 12px;
+      color: #777;
+
+      margin-top: 6px;
+    }
+
+    .screen {
+      display: none;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    .back {
+      border: none;
+      background: transparent;
+
+      padding: 5px 0 15px;
+
+      font-size: 15px;
+
+      color: #555;
+
+      cursor: pointer;
+    }
+
+    .detail-card {
+      background: white;
+
+      border-radius: 20px;
+
+      padding: 20px;
+
+      margin-bottom: 14px;
+
+      box-shadow:
+        0 3px 15px rgba(0,0,0,.05);
+    }
+
+    .detail-title {
+      font-size: 25px;
       font-weight: 800;
 
       line-height: 1.2;
 
+      margin-bottom: 8px;
     }
 
-
-    .subtitle {
-
-      margin-top: 6px;
-
-      color:
-        var(
-          --tg-theme-hint-color,
-          #8e8e93
-        );
-
-      font-size: 14px;
-
+    .detail-element {
+      color: #666;
+      margin-bottom: 14px;
     }
 
+    .section-title {
+      font-size: 18px;
+      font-weight: 750;
 
-    .card {
-
-      background:
-        var(
-          --tg-theme-secondary-bg-color,
-          #ffffff
-        );
-
-      border-radius: 18px;
-
-      margin-bottom: 12px;
-
-      overflow: hidden;
-
+      margin:
+        8px 0 12px;
     }
 
-
-    .card-title {
-
-      padding: 16px;
-
-      font-size: 17px;
-
-      font-weight: 700;
-
-    }
-
-
-    .row {
-
+    .stage {
       display: flex;
 
-      align-items: center;
+      align-items: flex-start;
 
-      justify-content: space-between;
+      gap: 12px;
 
-      gap: 15px;
+      padding: 12px 0;
 
-      min-height: 54px;
-
-      padding:
-        13px
-        16px;
-
-      border-top:
-        1px solid
-        var(
-          --tg-theme-section-separator-color,
-          #e5e5ea
-        );
-
+      border-bottom:
+        1px solid #eeeeee;
     }
 
-
-    .row-text {
-
-      flex: 1;
-
-      min-width: 0;
-
-      font-size: 15px;
-
-      line-height: 1.4;
-
-      word-break: break-word;
-
+    .stage:last-child {
+      border-bottom: none;
     }
 
+    .stage-icon {
+      width: 32px;
+      height: 32px;
 
-    /* Переключатель */
-
-    .switch {
-
-      width: 52px;
-
-      height: 31px;
-
-      flex: 0 0 52px;
-
-      padding: 0;
-
-      border: 0;
-
-      border-radius: 20px;
-
-      background: #c7c7cc;
-
-      position: relative;
-
-      transition:
-        background 0.2s;
-
-    }
-
-
-    .switch::after {
-
-      content: "";
-
-      position: absolute;
-
-      width: 25px;
-
-      height: 25px;
-
-      left: 3px;
-
-      top: 3px;
+      flex: 0 0 32px;
 
       border-radius: 50%;
 
-      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-      transition:
-        left 0.2s;
+      background: #eeeeee;
 
+      font-size: 15px;
     }
 
-
-    .switch.on {
-
-      background:
-        var(
-          --tg-theme-button-color,
-          #2481cc
-        );
-
+    .stage.completed .stage-icon {
+      background: #dff7e6;
     }
 
-
-    .switch.on::after {
-
-      left: 24px;
-
+    .stage-name {
+      font-weight: 650;
+      line-height: 1.25;
     }
 
+    .stage-status {
+      color: #777;
 
-    /* Кнопка */
+      font-size: 13px;
 
-    .button {
-
-      width: 100%;
-
-      margin-top: 5px;
-
-      padding: 14px;
-
-      border: 0;
-
-      border-radius: 14px;
-
-      background:
-        var(
-          --tg-theme-button-color,
-          #2481cc
-        );
-
-      color:
-        var(
-          --tg-theme-button-text-color,
-          #ffffff
-        );
-
-      font-size: 16px;
-
-      font-weight: 700;
-
+      margin-top: 3px;
     }
 
+    .stage-date {
+      color: #999;
 
-    .button:active {
+      font-size: 12px;
 
-      opacity: 0.7;
-
+      margin-top: 4px;
     }
 
-
-    /* Загрузка */
-
-    .loading {
-
-      min-height: 70vh;
-
+    .file {
       display: flex;
 
       align-items: center;
 
+      gap: 10px;
+
+      padding: 13px 0;
+
+      border-bottom:
+        1px solid #eeeeee;
+
+      text-decoration: none;
+
+      color: inherit;
+    }
+
+    .file:last-child {
+      border-bottom: none;
+    }
+
+    .file-icon {
+      width: 38px;
+      height: 38px;
+
+      border-radius: 10px;
+
+      background: #f1f1f1;
+
+      display: flex;
+      align-items: center;
       justify-content: center;
+    }
 
+    .file-name {
+      flex: 1;
+
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .file-arrow {
+      color: #999;
+      font-size: 20px;
+    }
+
+    .history-item {
+      padding: 12px 0;
+
+      border-bottom:
+        1px solid #eeeeee;
+    }
+
+    .history-item:last-child {
+      border-bottom: none;
+    }
+
+    .history-stage {
+      font-weight: 650;
+      margin-bottom: 3px;
+    }
+
+    .history-change {
+      font-size: 13px;
+      color: #555;
+    }
+
+    .history-date {
+      font-size: 12px;
+      color: #999;
+      margin-top: 4px;
+    }
+
+    .empty {
       text-align: center;
-
-      padding: 20px;
-
-      color:
-        var(
-          --tg-theme-hint-color,
-          #8e8e93
-        );
-
+      padding: 35px 15px;
+      color: #888;
     }
 
+    .refresh {
+      width: 100%;
 
-    /* Ошибка */
+      border: none;
 
-    .error {
+      background: #111;
+      color: white;
 
-      margin-top: 30px;
+      border-radius: 14px;
 
-      padding: 18px;
+      padding: 14px;
 
-      border-radius: 16px;
+      font-weight: 700;
 
-      background: #ff3b30;
+      margin-top: 5px;
 
-      color: #ffffff;
-
-      line-height: 1.5;
-
-      word-break: break-word;
-
+      cursor: pointer;
     }
-
-
   </style>
-
 </head>
-
 
 <body>
 
+<div class="app">
 
-<div id="app">
+  <!-- ================================================= -->
+  <!-- СПИСОК ЗАКАЗОВ -->
+  <!-- ================================================= -->
 
-  <div class="loading">
+  <div
+    id="ordersScreen"
+    class="screen active"
+  >
 
-    Загружаем таблицу...
+    <div class="header">
+
+      <div class="title">
+        📋 Делишки
+      </div>
+
+      <div
+        id="userName"
+        class="subtitle"
+      >
+        Загрузка...
+      </div>
+
+    </div>
+
+
+    <input
+      id="search"
+      class="search"
+      type="text"
+      placeholder="🔎 Найти заказ..."
+      autocomplete="off"
+    >
+
+
+    <div id="orders">
+
+      <div class="loading">
+        Загрузка заказов...
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================================================= -->
+  <!-- КАРТОЧКА ЗАКАЗА -->
+  <!-- ================================================= -->
+
+  <div
+    id="detailScreen"
+    class="screen"
+  >
+
+    <button
+      id="backButton"
+      class="back"
+    >
+      ← Назад
+    </button>
+
+
+    <div id="detail">
+
+      <div class="loading">
+        Загрузка...
+      </div>
+
+    </div>
 
   </div>
 
@@ -353,571 +468,227 @@
 
 <script>
 
+  // ========================================================
+  // TELEGRAM
+  // ========================================================
 
-// ========================================================
-// TELEGRAM
-// ========================================================
-
-const tg =
-  window.Telegram.WebApp;
-
-
-tg.ready();
-
-tg.expand();
+  const tg =
+    window.Telegram &&
+    window.Telegram.WebApp
+      ? window.Telegram.WebApp
+      : null;
 
 
-// ========================================================
-// GOOGLE APPS SCRIPT
-// ========================================================
-//
-// ВСТАВЬ СЮДА СВОЙ URL WEB APP
-//
-// ========================================================
+  if (tg) {
 
-const API_URL =
-  'https://script.google.com/macros/s/AKfycbx4ywzpu8EAX3YtdCFOBgp60iVEVhxfd29QaJAvTee274X8rlZojrMYTSocK08pb-KeMQ/exec';
+    tg.ready();
 
-
-// ========================================================
-// ПОЛУЧАЕМ ПОЛЬЗОВАТЕЛЯ TELEGRAM
-// ========================================================
-
-const telegramUser =
-  tg.initDataUnsafe &&
-  tg.initDataUnsafe.user;
-
-
-// ========================================================
-// ПРОВЕРКА TELEGRAM
-// ========================================================
-
-if (
-  !telegramUser ||
-  !telegramUser.id
-) {
-
-  showError(
-    'Telegram ID не получен. ' +
-    'Открой Mini App через Telegram.'
-  );
-
-} else {
-
-  console.log(
-    'Telegram ID:',
-    telegramUser.id
-  );
-
-
-  loadTable();
-
-}
-
-
-// ========================================================
-// API
-// ========================================================
-
-async function api(
-  action,
-  extra = {}
-) {
-
-
-  if (
-    !telegramUser ||
-    !telegramUser.id
-  ) {
-
-    throw new Error(
-      'Telegram ID не получен'
-    );
+    tg.expand();
 
   }
 
 
-  const requestData = {
+  // ========================================================
+  // GOOGLE APPS SCRIPT
+  // ========================================================
 
-    action:
-      action,
-
-    userId:
-      String(
-        telegramUser.id
-      ),
-
-    ...extra
-
-  };
+  const API_URL =
+    'https://script.google.com/macros/s/AKfycbx4ywzpu8EAX3YtdCFOBgp60iVEVhxfd29QaJAvTee274X8rlZojrMYTSocK08pb-KeMQ/exec';
 
 
-  console.log(
-    'Отправка:',
-    requestData
-  );
+  // ========================================================
+  // СОСТОЯНИЕ
+  // ========================================================
+
+  let orders = [];
+
+  let currentOrder = null;
 
 
-  const response =
-    await fetch(
-      API_URL,
-      {
+  // ========================================================
+  // ПОЛУЧЕНИЕ TELEGRAM ID
+  // ========================================================
 
-        method:
-          'POST',
+  function getTelegramUser() {
 
-        headers: {
+    if (!tg) {
 
-          'Content-Type':
-            'text/plain;charset=utf-8'
-
-        },
-
-        body:
-          JSON.stringify(
-            requestData
-          )
-
-      }
-    );
-
-
-  const text =
-    await response.text();
-
-
-  console.log(
-    'Ответ:',
-    text
-  );
-
-
-  let data;
-
-
-  try {
-
-    data =
-      JSON.parse(
-        text
+      throw new Error(
+        'Telegram WebApp недоступен'
       );
 
-  } catch (error) {
-
-    throw new Error(
-      'Apps Script вернул неправильный ответ: ' +
-      text
-    );
-
-  }
+    }
 
 
-  if (!data.ok) {
-
-    throw new Error(
-      data.error ||
-      'Ошибка Google Apps Script'
-    );
-
-  }
+    const user =
+      tg.initDataUnsafe &&
+      tg.initDataUnsafe.user
+        ? tg.initDataUnsafe.user
+        : null;
 
 
-  return data;
+    if (!user) {
 
-}
-
-
-// ========================================================
-// ЗАГРУЗКА ТАБЛИЦЫ
-// ========================================================
-
-async function loadTable() {
-
-
-  try {
-
-    showLoading();
-
-
-    const data =
-      await api(
-        'getTable'
+      throw new Error(
+        'Telegram ID не получен'
       );
 
-
-    renderTable(
-      data
-    );
+    }
 
 
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-
-    showError(
-      error.message
-    );
+    return user;
 
   }
 
-}
 
+  // ========================================================
+  // API
+  // ========================================================
 
-// ========================================================
-// ОТОБРАЖЕНИЕ
-// ========================================================
-
-function renderTable(
-  data
-) {
-
-
-  const app =
-    document.getElementById(
-      'app'
-    );
-
-
-  if (
-    !data ||
-    !data.values
+  async function api(
+    action,
+    extra = {}
   ) {
 
-    showError(
-      'Таблица не вернула данные.'
-    );
+    const user =
+      getTelegramUser();
 
-    return;
 
-  }
+    const body = {
 
+      action:
+        action,
 
-  // ------------------------------------------------------
-  // B1
-  // ------------------------------------------------------
+      userId:
+        String(user.id),
 
-  let b1 = false;
+      ...extra
 
+    };
 
-  if (
-    data.values[0] &&
-    data.values[0].length > 1
-  ) {
 
-    b1 =
-      data.values[0][1] === true;
+    const response =
+      await fetch(
+        API_URL,
+        {
 
-  }
+          method:
+            'POST',
 
+          headers: {
 
-  // ------------------------------------------------------
-  // HTML
-  // ------------------------------------------------------
+            'Content-Type':
+              'text/plain;charset=utf-8'
 
-  let html = `
+          },
 
-    <div class="container">
-
-
-      <div class="header">
-
-        <div class="title">
-
-          📋 ${escapeHtml(
-            data.sheetName ||
-            'Делишки Нади'
-          )}
-
-        </div>
-
-
-        <div class="subtitle">
-
-          👋 ${escapeHtml(
-            telegramUser.first_name ||
-            'Пользователь'
-          )}
-
-        </div>
-
-      </div>
-
-
-      <div class="card">
-
-
-        <div class="card-title">
-
-          📸 Фотографии
-
-        </div>
-
-
-        <div class="row">
-
-
-          <div class="row-text">
-
-            Фотографии закончились
-
-          </div>
-
-
-          <button
-
-            type="button"
-
-            class="switch ${
-              b1
-                ? 'on'
-                : ''
-            }"
-
-            onclick="
-              setMainCheckbox(
-                ${!b1}
-              )
-            "
-
-          ></button>
-
-
-        </div>
-
-
-      </div>
-
-
-      <div class="card">
-
-
-        <div class="card-title">
-
-          📊 Таблица
-
-        </div>
-
-  `;
-
-
-  let count = 0;
-
-
-  // ------------------------------------------------------
-  // ДАННЫЕ
-  // ------------------------------------------------------
-
-  data.values.forEach(
-    function(row, rowIndex) {
-
-
-      if (
-        !Array.isArray(row)
-      ) {
-
-        return;
-
-      }
-
-
-      row.forEach(
-        function(
-          value,
-          columnIndex
-        ) {
-
-
-          // B1 уже отображён сверху
-
-          if (
-            rowIndex === 0 &&
-            columnIndex === 1
-          ) {
-
-            return;
-
-          }
-
-
-          if (
-            value === '' ||
-            value === null ||
-            value === undefined
-          ) {
-
-            return;
-
-          }
-
-
-          count++;
-
-
-          html += `
-
-            <div class="row">
-
-              <div class="row-text">
-
-                ${escapeHtml(
-                  String(value)
-                )}
-
-              </div>
-
-            </div>
-
-          `;
+          body:
+            JSON.stringify(body)
 
         }
       );
 
+
+    const result =
+      await response.json();
+
+
+    if (
+      !result.ok
+    ) {
+
+      throw new Error(
+        result.error ||
+        'Ошибка API'
+      );
+
     }
-  );
 
 
-  if (
-    count === 0
+    return result;
+
+  }
+
+
+  // ========================================================
+  // ЗАПУСК
+  // ========================================================
+
+  async function start() {
+
+    try {
+
+      const user =
+        getTelegramUser();
+
+
+      // Имя пользователя
+
+      const name =
+        user.first_name ||
+        user.username ||
+        'Пользователь';
+
+
+      document
+        .getElementById(
+          'userName'
+        )
+        .textContent =
+        '👋 ' + name;
+
+
+      // Проверка API
+
+      await api(
+        'test'
+      );
+
+
+      // Получение заказов
+
+      const result =
+        await api(
+          'getOrders'
+        );
+
+
+      orders =
+        result.orders || [];
+
+
+      renderOrders();
+
+
+    } catch (error) {
+
+      console.error(
+        error
+      );
+
+
+      showError(
+        error.message
+      );
+
+    }
+
+  }
+
+
+  // ========================================================
+  // ОШИБКА
+  // ========================================================
+
+  function showError(
+    message
   ) {
 
-    html += `
-
-      <div class="row">
-
-        <div class="row-text">
-
-          Таблица пока пустая.
-
-        </div>
-
-      </div>
-
-    `;
-
-  }
-
-
-  html += `
-
-      </div>
-
-
-      <button
-
-        type="button"
-
-        class="button"
-
-        onclick="
-          loadTable()
-        "
-
-      >
-
-        🔄 Обновить
-
-      </button>
-
-
-    </div>
-
-  `;
-
-
-  app.innerHTML =
-    html;
-
-}
-
-
-// ========================================================
-// ЧЕКБОКС B1
-// ========================================================
-
-async function setMainCheckbox(
-  checked
-) {
-
-
-  try {
-
-    await api(
-
-      'setCheckbox',
-
-      {
-
-        checked:
-          checked
-
-      }
-
-    );
-
-
-    await loadTable();
-
-
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-
-    showError(
-      error.message
-    );
-
-  }
-
-}
-
-
-// ========================================================
-// ЗАГРУЗКА
-// ========================================================
-
-function showLoading() {
-
-
-  document
-    .getElementById(
-      'app'
-    )
-    .innerHTML = `
-
-      <div class="loading">
-
-        Загружаем таблицу...
-
-      </div>
-
-    `;
-
-}
-
-
-// ========================================================
-// ОШИБКА
-// ========================================================
-
-function showError(
-  message
-) {
-
-
-  document
-    .getElementById(
-      'app'
-    )
-    .innerHTML = `
-
-      <div class="container">
-
+    document
+      .getElementById(
+        'orders'
+      )
+      .innerHTML = `
 
         <div class="error">
 
@@ -927,74 +698,800 @@ function showError(
 
         </div>
 
+      `;
 
-        <button
+  }
 
-          type="button"
 
-          class="button"
+  // ========================================================
+  // СПИСОК ЗАКАЗОВ
+  // ========================================================
 
-          onclick="
-            loadTable()
-          "
+  function renderOrders() {
 
-        >
+    const container =
+      document.getElementById(
+        'orders'
+      );
 
-          🔄 Повторить
 
-        </button>
+    const search =
+      document
+        .getElementById(
+          'search'
+        )
+        .value
+        .trim()
+        .toLowerCase();
 
+
+    const filtered =
+      orders.filter(
+        function(order) {
+
+          const text =
+            (
+
+              order.order +
+              ' ' +
+              order.element +
+              ' ' +
+              order.type
+
+            )
+            .toLowerCase();
+
+
+          return text.includes(
+            search
+          );
+
+        }
+      );
+
+
+    if (
+      filtered.length === 0
+    ) {
+
+      container.innerHTML = `
+
+        <div class="empty">
+
+          Заказы не найдены
+
+        </div>
+
+      `;
+
+      return;
+
+    }
+
+
+    container.innerHTML =
+      filtered
+        .map(
+          function(order) {
+
+            return `
+
+              <div
+                class="order"
+                data-row="${order.row}"
+              >
+
+                <div class="order-name">
+
+                  ${escapeHtml(
+                    order.order
+                  )}
+
+                </div>
+
+
+                <div class="order-element">
+
+                  ${escapeHtml(
+                    order.element
+                  )}
+
+                </div>
+
+
+                <div class="order-info">
+
+                  ${
+                    order.type
+                      ? `
+                        <div class="tag">
+                          🏷 ${escapeHtml(
+                            order.type
+                          )}
+                        </div>
+                      `
+                      : ''
+                  }
+
+
+                  ${
+                    order.installDate
+                      ? `
+                        <div class="tag">
+                          📅 ${escapeHtml(
+                            order.installDate
+                          )}
+                        </div>
+                      `
+                      : ''
+                  }
+
+
+                  <div class="tag">
+
+                    ${order.progress.percent}% готово
+
+                  </div>
+
+                </div>
+
+
+                <div class="progress">
+
+                  <div
+                    class="progress-bar"
+                    style="
+                      width:${order.progress.percent}%;
+                    "
+                  ></div>
+
+                </div>
+
+
+                <div class="progress-text">
+
+                  ${order.progress.completed}
+                  из
+                  ${order.progress.total}
+                  этапов
+
+                </div>
+
+              </div>
+
+            `;
+
+          }
+        )
+        .join('');
+
+
+    // ------------------------------------------------------
+    // Клики
+    // ------------------------------------------------------
+
+    container
+      .querySelectorAll(
+        '.order'
+      )
+      .forEach(
+        function(element) {
+
+          element.addEventListener(
+            'click',
+            function() {
+
+              const row =
+                Number(
+                  element.dataset.row
+                );
+
+
+              openOrder(
+                row
+              );
+
+            }
+          );
+
+        }
+      );
+
+  }
+
+
+  // ========================================================
+  // ОТКРЫТЬ ЗАКАЗ
+  // ========================================================
+
+  async function openOrder(
+    row
+  ) {
+
+    document
+      .getElementById(
+        'ordersScreen'
+      )
+      .classList
+      .remove('active');
+
+
+    document
+      .getElementById(
+        'detailScreen'
+      )
+      .classList
+      .add('active');
+
+
+    document
+      .getElementById(
+        'detail'
+      )
+      .innerHTML = `
+
+        <div class="loading">
+
+          Загрузка заказа...
+
+        </div>
+
+      `;
+
+
+    try {
+
+      const result =
+        await api(
+          'getOrder',
+          {
+            row:
+              row
+          }
+        );
+
+
+      currentOrder =
+        result.order;
+
+
+      renderOrder(
+        currentOrder
+      );
+
+
+    } catch (error) {
+
+      document
+        .getElementById(
+          'detail'
+        )
+        .innerHTML = `
+
+          <div class="error">
+
+            ❌ ${escapeHtml(
+              error.message
+            )}
+
+          </div>
+
+        `;
+
+    }
+
+  }
+
+
+  // ========================================================
+  // РЕНДЕР ЗАКАЗА
+  // ========================================================
+
+  function renderOrder(
+    order
+  ) {
+
+    const detail =
+      document
+        .getElementById(
+          'detail'
+        );
+
+
+    // ------------------------------------------------------
+    // Этапы
+    // ------------------------------------------------------
+
+    const stages =
+      order.statuses || [];
+
+
+    let stagesHtml = '';
+
+
+    if (
+      stages.length
+    ) {
+
+      stagesHtml =
+        stages
+          .map(
+            function(stage) {
+
+              return `
+
+                <div
+                  class="
+                    stage
+                    ${
+                      stage.completed
+                        ? 'completed'
+                        : ''
+                    }
+                  "
+                >
+
+                  <div class="stage-icon">
+
+                    ${
+                      stage.completed
+                        ? '✓'
+                        : '○'
+                    }
+
+                  </div>
+
+
+                  <div>
+
+                    <div class="stage-name">
+
+                      ${escapeHtml(
+                        stage.name
+                      )}
+
+                    </div>
+
+
+                    <div class="stage-status">
+
+                      ${escapeHtml(
+                        stage.value
+                      )}
+
+                    </div>
+
+
+                    ${
+                      stage.changedAt
+                        ? `
+                          <div class="stage-date">
+
+                            Последнее изменение:
+                            ${escapeHtml(
+                              stage.changedAt
+                            )}
+
+                          </div>
+                        `
+                        : ''
+                    }
+
+                  </div>
+
+                </div>
+
+              `;
+
+            }
+          )
+          .join('');
+
+    } else {
+
+      stagesHtml = `
+
+        <div class="empty">
+
+          Этапы пока не определены
+
+        </div>
+
+      `;
+
+    }
+
+
+    // ------------------------------------------------------
+    // Файлы
+    // ------------------------------------------------------
+
+    const files =
+      order.files || [];
+
+
+    let filesHtml = '';
+
+
+    if (
+      files.length
+    ) {
+
+      filesHtml =
+        files
+          .map(
+            function(file) {
+
+              return `
+
+                <a
+                  class="file"
+                  href="${escapeAttribute(
+                    file.url
+                  )}"
+                  target="_blank"
+                  rel="noopener"
+                >
+
+                  <div class="file-icon">
+
+                    📎
+
+                  </div>
+
+
+                  <div class="file-name">
+
+                    ${escapeHtml(
+                      file.name
+                    )}
+
+                  </div>
+
+
+                  <div class="file-arrow">
+
+                    ›
+
+                  </div>
+
+                </a>
+
+              `;
+
+            }
+          )
+          .join('');
+
+    } else {
+
+      filesHtml = `
+
+        <div class="empty">
+
+          Файлов нет
+
+        </div>
+
+      `;
+
+    }
+
+
+    // ------------------------------------------------------
+    // История
+    // ------------------------------------------------------
+
+    const history =
+      order.history || [];
+
+
+    let historyHtml = '';
+
+
+    if (
+      history.length
+    ) {
+
+      historyHtml =
+        history
+          .map(
+            function(item) {
+
+              return `
+
+                <div class="history-item">
+
+                  <div class="history-stage">
+
+                    ${escapeHtml(
+                      item.stage
+                    )}
+
+                  </div>
+
+
+                  <div class="history-change">
+
+                    ${
+                      item.oldValue
+                        ? escapeHtml(
+                            item.oldValue
+                          )
+                        : '—'
+                    }
+
+                    →
+
+                    ${
+                      item.newValue
+                        ? escapeHtml(
+                            item.newValue
+                          )
+                        : '—'
+                    }
+
+                  </div>
+
+
+                  <div class="history-date">
+
+                    ${escapeHtml(
+                      item.date
+                    )}
+
+                  </div>
+
+                </div>
+
+              `;
+
+            }
+          )
+          .join('');
+
+    } else {
+
+      historyHtml = `
+
+        <div class="empty">
+
+          История изменений пока пустая
+
+        </div>
+
+      `;
+
+    }
+
+
+    // ------------------------------------------------------
+    // HTML
+    // ------------------------------------------------------
+
+    detail.innerHTML = `
+
+      <div class="detail-card">
+
+        <div class="detail-title">
+
+          ${escapeHtml(
+            order.order
+          )}
+
+        </div>
+
+
+        <div class="detail-element">
+
+          ${escapeHtml(
+            order.element
+          )}
+
+        </div>
+
+
+        <div class="order-info">
+
+          ${
+            order.type
+              ? `
+                <div class="tag">
+
+                  🏷 ${escapeHtml(
+                    order.type
+                  )}
+
+                </div>
+              `
+              : ''
+          }
+
+
+          ${
+            order.installDate
+              ? `
+                <div class="tag">
+
+                  📅 Монтаж:
+                  ${escapeHtml(
+                    order.installDate
+                  )}
+
+                </div>
+              `
+              : ''
+          }
+
+
+          <div class="tag">
+
+            📊 ${order.progress.percent}% готово
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="detail-card">
+
+        <div class="section-title">
+
+          📋 Состояние заказа
+
+        </div>
+
+
+        ${stagesHtml}
+
+      </div>
+
+
+      <div class="detail-card">
+
+        <div class="section-title">
+
+          📁 Файлы
+
+        </div>
+
+
+        ${filesHtml}
+
+      </div>
+
+
+      <div class="detail-card">
+
+        <div class="section-title">
+
+          🕐 История
+
+        </div>
+
+
+        ${historyHtml}
 
       </div>
 
     `;
 
-}
+  }
 
 
-// ========================================================
-// ЗАЩИТА HTML
-// ========================================================
+  // ========================================================
+  // НАЗАД
+  // ========================================================
 
-function escapeHtml(
-  value
-) {
-
-  return String(
-    value
-  )
-
-    .replace(
-      /&/g,
-      '&amp;'
+  document
+    .getElementById(
+      'backButton'
     )
+    .addEventListener(
+      'click',
+      function() {
 
-    .replace(
-      /</g,
-      '&lt;'
-    )
+        document
+          .getElementById(
+            'detailScreen'
+          )
+          .classList
+          .remove('active');
 
-    .replace(
-      />/g,
-      '&gt;'
-    )
 
-    .replace(
-      /"/g,
-      '&quot;'
-    )
+        document
+          .getElementById(
+            'ordersScreen'
+          )
+          .classList
+          .add('active');
 
-    .replace(
-      /'/g,
-      '&#039;'
+
+        currentOrder =
+          null;
+
+      }
     );
 
-}
 
+  // ========================================================
+  // ПОИСК
+  // ========================================================
+
+  document
+    .getElementById(
+      'search'
+    )
+    .addEventListener(
+      'input',
+      function() {
+
+        renderOrders();
+
+      }
+    );
+
+
+  // ========================================================
+  // ЭКРАНИРОВАНИЕ HTML
+  // ========================================================
+
+  function escapeHtml(
+    value
+  ) {
+
+    return String(
+      value ?? ''
+    )
+
+      .replace(
+        /&/g,
+        '&amp;'
+      )
+
+      .replace(
+        /</g,
+        '&lt;'
+      )
+
+      .replace(
+        />/g,
+        '&gt;'
+      )
+
+      .replace(
+        /"/g,
+        '&quot;'
+      )
+
+      .replace(
+        /'/g,
+        '&#039;'
+      );
+
+  }
+
+
+  function escapeAttribute(
+    value
+  ) {
+
+    return escapeHtml(
+      value
+    );
+
+  }
+
+
+  // ========================================================
+  // ЗАПУСК
+  // ========================================================
+
+  start();
 
 </script>
 
-
 </body>
-
 </html>
