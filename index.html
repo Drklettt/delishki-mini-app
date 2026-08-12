@@ -2,291 +2,35 @@
 <html lang="ru">
 
 <head>
-
   <meta charset="UTF-8">
 
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    content="width=device-width, initial-scale=1.0"
   >
 
-  <title>Делишки Нади</title>
+  <title>Telegram Test</title>
 
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-  <style>
-
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-
-      background:
-        var(--tg-theme-bg-color, #f2f2f7);
-
-      color:
-        var(--tg-theme-text-color, #111111);
-
-      font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Roboto,
-        Arial,
-        sans-serif;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 700px;
-
-      margin: 0 auto;
-
-      padding:
-        20px
-        14px
-        35px;
-    }
-
-    .header {
-      margin-bottom: 20px;
-    }
-
-    .title {
-      font-size: 28px;
-      font-weight: 800;
-      line-height: 1.2;
-    }
-
-    .subtitle {
-      margin-top: 6px;
-
-      color:
-        var(
-          --tg-theme-hint-color,
-          #8e8e93
-        );
-
-      font-size: 14px;
-    }
-
-    .card {
-      background:
-        var(
-          --tg-theme-secondary-bg-color,
-          #ffffff
-        );
-
-      border-radius: 18px;
-
-      margin-bottom: 12px;
-
-      overflow: hidden;
-    }
-
-    .card-title {
-      padding: 16px;
-
-      font-size: 17px;
-      font-weight: 700;
-    }
-
-    .row {
-      display: flex;
-
-      align-items: center;
-      justify-content: space-between;
-
-      gap: 15px;
-
-      min-height: 54px;
-
-      padding:
-        13px
-        16px;
-
-      border-top:
-        1px solid
-        var(
-          --tg-theme-section-separator-color,
-          #e5e5ea
-        );
-    }
-
-    .row-text {
-      flex: 1;
-
-      min-width: 0;
-
-      font-size: 15px;
-
-      line-height: 1.4;
-
-      word-break: break-word;
-    }
-
-    .switch {
-      width: 52px;
-      height: 31px;
-
-      flex: 0 0 52px;
-
-      padding: 0;
-
-      border: 0;
-
-      border-radius: 20px;
-
-      background: #c7c7cc;
-
-      position: relative;
-
-      transition:
-        background 0.2s;
-    }
-
-    .switch::after {
-      content: "";
-
-      position: absolute;
-
-      width: 25px;
-      height: 25px;
-
-      left: 3px;
-      top: 3px;
-
-      border-radius: 50%;
-
-      background: #ffffff;
-
-      transition:
-        left 0.2s;
-    }
-
-    .switch.on {
-      background:
-        var(
-          --tg-theme-button-color,
-          #2481cc
-        );
-    }
-
-    .switch.on::after {
-      left: 24px;
-    }
-
-    .button {
-      width: 100%;
-
-      margin-top: 5px;
-
-      padding: 14px;
-
-      border: 0;
-
-      border-radius: 14px;
-
-      background:
-        var(
-          --tg-theme-button-color,
-          #2481cc
-        );
-
-      color:
-        var(
-          --tg-theme-button-text-color,
-          #ffffff
-        );
-
-      font-size: 16px;
-
-      font-weight: 700;
-    }
-
-    .button:active {
-      opacity: 0.75;
-    }
-
-    .loading {
-      min-height: 70vh;
-
-      display: flex;
-
-      align-items: center;
-      justify-content: center;
-
-      text-align: center;
-
-      padding: 20px;
-
-      color:
-        var(
-          --tg-theme-hint-color,
-          #8e8e93
-        );
-    }
-
-    .error {
-      margin-top: 30px;
-
-      padding: 18px;
-
-      border-radius: 16px;
-
-      background: #ff3b30;
-
-      color: #ffffff;
-
-      line-height: 1.5;
-
-      word-break: break-word;
-    }
-
-    .debug {
-      margin-top: 12px;
-
-      padding: 12px;
-
-      border-radius: 12px;
-
-      background:
-        rgba(0, 0, 0, 0.08);
-
-      font-size: 12px;
-
-      word-break: break-all;
-    }
-
-  </style>
-
 </head>
-
 
 <body>
 
-
-<div id="app">
-
-  <div class="loading">
-
-    Загружаем таблицу...
-
-  </div>
-
+<div id="result" style="
+  font-family: Arial;
+  padding: 20px;
+  font-size: 18px;
+  line-height: 1.6;
+">
+  Проверяем Telegram...
 </div>
 
 
 <script>
 
+const result =
+  document.getElementById('result');
 
-// =====================================================
-// TELEGRAM WEB APP
-// =====================================================
 
 const tg =
   window.Telegram.WebApp;
@@ -294,788 +38,99 @@ const tg =
 
 tg.ready();
 
-tg.expand();
+
+let html = '';
 
 
-// =====================================================
-// GOOGLE APPS SCRIPT
-// =====================================================
-//
-// ВАЖНО:
-// Здесь должен быть URL твоего Google Apps Script.
-//
-// Например:
-//
-// https://script.google.com/macros/s/AKfycbxxxxxxxx/exec
-//
-// =====================================================
+// ------------------------------------------------
+// Проверяем Telegram WebApp
+// ------------------------------------------------
 
-const API_URL =
-  'https://script.google.com/macros/s/AKfycbx4ywzpu8EAX3YtdCFOBgp60iVEVhxfd29QaJAvTee274X8rlZojrMYTSocK08pb-KeMQ/exec';
+html +=
+  '<b>Telegram WebApp:</b> ' +
+  (
+    window.Telegram &&
+    window.Telegram.WebApp
+      ? 'ЕСТЬ'
+      : 'НЕТ'
+  ) +
+  '<br><br>';
 
 
-// =====================================================
-// TELEGRAM USER
-// =====================================================
+// ------------------------------------------------
+// Проверяем initData
+// ------------------------------------------------
 
-let telegramUser = null;
-
-
-// =====================================================
-// ПОЛУЧЕНИЕ ПОЛЬЗОВАТЕЛЯ TELEGRAM
-// =====================================================
-
-function getTelegramUser() {
-
-
-  // ---------------------------------------------------
-  // СПОСОБ №1
-  // initDataUnsafe
-  // ---------------------------------------------------
-
-  if (
-    tg.initDataUnsafe &&
-    tg.initDataUnsafe.user &&
-    tg.initDataUnsafe.user.id
-  ) {
-
-    console.log(
-      'Пользователь получен через initDataUnsafe'
-    );
-
-    return tg.initDataUnsafe.user;
-
-  }
+html +=
+  '<b>initData:</b> ' +
+  (
+    tg.initData
+      ? 'ЕСТЬ'
+      : 'ПУСТО'
+  ) +
+  '<br><br>';
 
 
-  // ---------------------------------------------------
-  // СПОСОБ №2
-  // Парсим initData самостоятельно
-  // ---------------------------------------------------
+// ------------------------------------------------
+// Проверяем initDataUnsafe
+// ------------------------------------------------
 
-  if (tg.initData) {
-
-    try {
-
-      const params =
-        new URLSearchParams(
-          tg.initData
-        );
-
-
-      const userString =
-        params.get('user');
+html +=
+  '<b>initDataUnsafe:</b> ' +
+  (
+    tg.initDataUnsafe
+      ? 'ЕСТЬ'
+      : 'НЕТ'
+  ) +
+  '<br><br>';
 
 
-      if (userString) {
+// ------------------------------------------------
+// Проверяем user
+// ------------------------------------------------
 
-        const user =
-          JSON.parse(
-            userString
-          );
-
-
-        console.log(
-          'Пользователь получен через initData'
-        );
+const user =
+  tg.initDataUnsafe &&
+  tg.initDataUnsafe.user;
 
 
-        return user;
-
-      }
-
-    } catch (error) {
-
-      console.error(
-        'Ошибка разбора initData:',
-        error
-      );
-
-    }
-
-  }
+html +=
+  '<b>user:</b> ' +
+  (
+    user
+      ? 'ЕСТЬ'
+      : 'НЕТ'
+  ) +
+  '<br><br>';
 
 
-  return null;
-
-}
-
-
-// =====================================================
-// ИНИЦИАЛИЗАЦИЯ
-// =====================================================
-
-telegramUser =
-  getTelegramUser();
-
-
-console.log(
-  'Telegram initData:',
-  tg.initData
-);
-
-
-console.log(
-  'Telegram initDataUnsafe:',
-  tg.initDataUnsafe
-);
-
-
-console.log(
-  'Telegram user:',
-  telegramUser
-);
-
-
-// =====================================================
-// ПРОВЕРКА TELEGRAM
-// =====================================================
+// ------------------------------------------------
+// ID
+// ------------------------------------------------
 
 if (
-  !telegramUser ||
-  !telegramUser.id
+  user &&
+  user.id
 ) {
 
-  showTelegramError();
+  html +=
+    '<b>Telegram ID:</b> ' +
+    user.id;
 
 } else {
 
-  console.log(
-    'Telegram ID:',
-    telegramUser.id
-  );
-
-
-  loadTable();
+  html +=
+    '<b style="color:red">' +
+    '❌ Telegram ID НЕ получен' +
+    '</b>';
 
 }
 
 
-// =====================================================
-// ОТПРАВКА ЗАПРОСА В GOOGLE APPS SCRIPT
-// =====================================================
-
-async function api(
-  action,
-  extra = {}
-) {
-
-
-  if (
-    !telegramUser ||
-    !telegramUser.id
-  ) {
-
-    throw new Error(
-      'Telegram ID не получен'
-    );
-
-  }
-
-
-  const requestData = {
-
-    action:
-      action,
-
-    userId:
-      String(
-        telegramUser.id
-      ),
-
-    ...extra
-
-  };
-
-
-  console.log(
-    'Отправляем в Apps Script:',
-    requestData
-  );
-
-
-  const response =
-    await fetch(
-      API_URL,
-      {
-
-        method:
-          'POST',
-
-        headers: {
-
-          'Content-Type':
-            'text/plain;charset=utf-8'
-
-        },
-
-        body:
-          JSON.stringify(
-            requestData
-          )
-
-      }
-    );
-
-
-  const text =
-    await response.text();
-
-
-  console.log(
-    'Ответ Apps Script:',
-    text
-  );
-
-
-  let data;
-
-
-  try {
-
-    data =
-      JSON.parse(
-        text
-      );
-
-  } catch (error) {
-
-    throw new Error(
-      'Google Apps Script вернул некорректный ответ: ' +
-      text
-    );
-
-  }
-
-
-  if (!data.ok) {
-
-    throw new Error(
-      data.error ||
-      'Ошибка Google Apps Script'
-    );
-
-  }
-
-
-  return data;
-
-}
-
-
-// =====================================================
-// ЗАГРУЗКА ТАБЛИЦЫ
-// =====================================================
-
-async function loadTable() {
-
-  try {
-
-    showLoading();
-
-
-    const data =
-      await api(
-        'getTable'
-      );
-
-
-    renderTable(
-      data
-    );
-
-
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-
-    showError(
-      error.message
-    );
-
-  }
-
-}
-
-
-// =====================================================
-// ОТОБРАЖЕНИЕ ТАБЛИЦЫ
-// =====================================================
-
-function renderTable(
-  data
-) {
-
-
-  const app =
-    document.getElementById(
-      'app'
-    );
-
-
-  if (
-    !data ||
-    !data.values
-  ) {
-
-    showError(
-      'Google Apps Script не вернул данные таблицы.'
-    );
-
-    return;
-
-  }
-
-
-  // ---------------------------------------------------
-  // B1
-  // ---------------------------------------------------
-
-  let b1 = false;
-
-
-  if (
-    data.values[0] &&
-    data.values[0].length > 1
-  ) {
-
-    b1 =
-      data.values[0][1] === true;
-
-  }
-
-
-  // ---------------------------------------------------
-  // HTML
-  // ---------------------------------------------------
-
-  let html = `
-
-    <div class="container">
-
-
-      <div class="header">
-
-        <div class="title">
-
-          📋 ${escapeHtml(
-            data.sheetName ||
-            'Делишки Нади'
-          )}
-
-        </div>
-
-
-        <div class="subtitle">
-
-          👋 ${escapeHtml(
-            telegramUser.first_name ||
-            'Пользователь'
-          )}
-
-        </div>
-
-      </div>
-
-
-      <div class="card">
-
-
-        <div class="card-title">
-
-          📸 Фотографии
-
-        </div>
-
-
-        <div class="row">
-
-
-          <div class="row-text">
-
-            Фотографии закончились
-
-          </div>
-
-
-          <button
-
-            type="button"
-
-            class="switch ${
-              b1
-                ? 'on'
-                : ''
-            }"
-
-            onclick="
-              setMainCheckbox(
-                ${!b1}
-              )
-            "
-
-          ></button>
-
-
-        </div>
-
-
-      </div>
-
-
-      <div class="card">
-
-
-        <div class="card-title">
-
-          📊 Таблица
-
-        </div>
-
-  `;
-
-
-  let count = 0;
-
-
-  // ---------------------------------------------------
-  // ВЫВОД ЗНАЧЕНИЙ
-  // ---------------------------------------------------
-
-  data.values.forEach(
-    function(row, rowIndex) {
-
-
-      if (!Array.isArray(row)) {
-
-        return;
-
-      }
-
-
-      row.forEach(
-        function(value, columnIndex) {
-
-
-          // B1 уже отображается выше
-
-          if (
-            rowIndex === 0 &&
-            columnIndex === 1
-          ) {
-
-            return;
-
-          }
-
-
-          if (
-            value === '' ||
-            value === null ||
-            value === undefined
-          ) {
-
-            return;
-
-          }
-
-
-          count++;
-
-
-          html += `
-
-            <div class="row">
-
-              <div class="row-text">
-
-                ${escapeHtml(
-                  String(value)
-                )}
-
-              </div>
-
-            </div>
-
-          `;
-
-        }
-      );
-
-    }
-  );
-
-
-  if (count === 0) {
-
-    html += `
-
-      <div class="row">
-
-        <div class="row-text">
-
-          Таблица пока пустая.
-
-        </div>
-
-      </div>
-
-    `;
-
-  }
-
-
-  html += `
-
-      </div>
-
-
-      <button
-
-        type="button"
-
-        class="button"
-
-        onclick="
-          loadTable()
-        "
-
-      >
-
-        🔄 Обновить
-
-      </button>
-
-
-    </div>
-
-  `;
-
-
-  app.innerHTML =
-    html;
-
-}
-
-
-// =====================================================
-// ИЗМЕНЕНИЕ ЧЕКБОКСА B1
-// =====================================================
-
-async function setMainCheckbox(
-  checked
-) {
-
-
-  try {
-
-    await api(
-
-      'setCheckbox',
-
-      {
-
-        checked:
-          checked
-
-      }
-
-    );
-
-
-    await loadTable();
-
-
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-
-    showError(
-      error.message
-    );
-
-  }
-
-}
-
-
-// =====================================================
-// ЗАГРУЗКА
-// =====================================================
-
-function showLoading() {
-
-  document
-    .getElementById(
-      'app'
-    )
-    .innerHTML = `
-
-      <div class="loading">
-
-        Загружаем таблицу...
-
-      </div>
-
-    `;
-
-}
-
-
-// =====================================================
-// ОШИБКА TELEGRAM
-// =====================================================
-
-function showTelegramError() {
-
-
-  const initDataStatus =
-    tg.initData
-      ? 'ПОЛУЧЕН'
-      : 'ПУСТОЙ';
-
-
-  document
-    .getElementById(
-      'app'
-    )
-    .innerHTML = `
-
-      <div class="container">
-
-
-        <div class="error">
-
-          ❌ Telegram ID не получен.
-
-
-          <div class="debug">
-
-            <b>initData:</b>
-            ${initDataStatus}
-
-            <br><br>
-
-            <b>Открой Mini App:</b>
-
-            <br>
-
-            непосредственно через Telegram,
-            используя кнопку
-            «📋 Таблица».
-
-          </div>
-
-
-        </div>
-
-
-      </div>
-
-    `;
-
-}
-
-
-// =====================================================
-// ОБЩАЯ ОШИБКА
-// =====================================================
-
-function showError(
-  message
-) {
-
-
-  document
-    .getElementById(
-      'app'
-    )
-    .innerHTML = `
-
-      <div class="container">
-
-
-        <div class="error">
-
-          ❌ ${escapeHtml(
-            message
-          )}
-
-        </div>
-
-
-        <button
-
-          type="button"
-
-          class="button"
-
-          onclick="
-            loadTable()
-          "
-
-        >
-
-          🔄 Повторить
-
-        </button>
-
-
-      </div>
-
-    `;
-
-}
-
-
-// =====================================================
-// ЗАЩИТА HTML
-// =====================================================
-
-function escapeHtml(
-  value
-) {
-
-  return String(
-    value
-  )
-
-    .replace(
-      /&/g,
-      '&amp;'
-    )
-
-    .replace(
-      /</g,
-      '&lt;'
-    )
-
-    .replace(
-      />/g,
-      '&gt;'
-    )
-
-    .replace(
-      /"/g,
-      '&quot;'
-    )
-
-    .replace(
-      /'/g,
-      '&#039;'
-    );
-
-}
-
+result.innerHTML =
+  html;
 
 </script>
-
 
 </body>
 
